@@ -1,7 +1,7 @@
 # CHANGELOG
 
 This is a list of modifications I have made to the repository. 
-I'm aiming to be able to track all changes in the case the zhrexl (original repo owner) resurfaces. Then we can merge everything back in (if necessary).
+I'm aiming to be able to track all changes in the case zhrexl (the original repo owner) resurfaces. Then we can merge everything back in (if necessary).
 
 **November 3, 2024**
 - Forked DrawOnYourScreen2 (all branches)
