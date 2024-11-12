@@ -1462,4 +1462,3 @@ var DrawingArea = GObject.registerClass({
         return contents != (this.currentJson && this.currentJson.contents);
     }
 });
-
