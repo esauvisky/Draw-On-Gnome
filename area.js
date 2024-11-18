@@ -51,7 +51,7 @@ const TOGGLE_ANIMATION_DURATION = 300; // ms
 const GRID_TILES_HORIZONTAL_NUMBER = 30;
 const COLOR_PICKER_EXTENSION_UUID = 'color-picker@tuberry';
 
-const { Shape, StaticColor, TextAlignment, Transformation } = Elements;
+const { Shape, TextAlignment, Transformation } = Elements;
 const { DisplayStrings } = Menu;
 
 const FontGenericFamilies = ['Sans-Serif', 'Serif', 'Monospace', 'Cursive', 'Fantasy'];
@@ -109,6 +109,7 @@ export const DrawingArea = GObject.registerClass({
     Signals: {
         'show-osd': { param_types: [Gio.Icon.$gtype, GObject.TYPE_STRING, GObject.TYPE_STRING, GObject.TYPE_DOUBLE, GObject.TYPE_BOOLEAN] },
         'pointer-cursor-changed': { param_types: [GObject.TYPE_STRING] },
+        'update-action-mode': {},
         'leave-drawing-mode': {}
     },
 }, class DrawingArea extends St.Widget {
@@ -203,7 +204,7 @@ export const DrawingArea = GObject.registerClass({
         this._currentPalette = palette;
         this.colors = palette[1].map(colorString => this.getColorFromString(colorString, 'White'));
         if (!this.colors[0])
-            this.colors.push(StaticColor.WHITE);
+            this.colors.push(Clutter.Color.get_static(Clutter.StaticColor.WHITE));
         this._extension.drawingSettings.set_value("tool-palette", new GLib.Variant('(sas)', palette))
     }
 
@@ -355,7 +356,7 @@ export const DrawingArea = GObject.registerClass({
         if (!this.reactive)
             return;
 
-        cr.setSourceColor(this.gridColor);
+        Clutter.cairo_set_source_color(cr, this.gridColor);
 
         let [gridX, gridY] = [0, 0];
         while (gridX < this.monitor.width / 2) {
@@ -805,6 +806,7 @@ export const DrawingArea = GObject.registerClass({
         this.textEntry = new St.Entry({ opacity: 1, x: stageX + x, y: stageY + y });
         this.insert_child_below(this.textEntry, null);
         this.textEntry.grab_key_focus();
+        this.updateActionMode();
         this.updatePointerCursor();
 
         let ibusCandidatePopup = Main.layoutManager.uiGroup.get_children().find(child =>
@@ -858,6 +860,7 @@ export const DrawingArea = GObject.registerClass({
         this.textEntry.destroy();
         delete this.textEntry;
         this.grab_key_focus();
+        this.updateActionMode();
         this.updatePointerCursor();
 
         this._redisplay();
@@ -976,7 +979,7 @@ export const DrawingArea = GObject.registerClass({
 
     toggleBackground() {
         this.hasBackground = !this.hasBackground;
-        let backgroundColor = this.hasBackground ? this.areaBackgroundColor : StaticColor.TRANSPARENT;
+        let backgroundColor = this.hasBackground ? this.areaBackgroundColor : Clutter.Color.get_static(Clutter.StaticColor.TRANSPARENT);
 
         if (this.ease) {
             this.remove_all_transitions();
@@ -1284,6 +1287,10 @@ export const DrawingArea = GObject.registerClass({
         delete this.areaManagerUtils;
     }
 
+    updateActionMode() {
+        this.emit('update-action-mode');
+    }
+
     enterDrawingMode() {
         this.keyPressedHandler = this.connect('key-press-event', this._onKeyPressed.bind(this));
         this.buttonPressedHandler = this.connect('button-press-event', this._onButtonPressed.bind(this));
@@ -1479,7 +1486,7 @@ export const DrawingArea = GObject.registerClass({
             return color;
 
         log(`${this._extension.metadata.uuid}: "${string}" color cannot be parsed.`);
-        color = StaticColor[fallback.toUpperCase()];
+        color = Clutter.Color.get_static(Clutter.StaticColor[fallback.toUpperCase()]);
         color.toJSON = () => fallback;
         color.toString = () => fallback;
         return color;

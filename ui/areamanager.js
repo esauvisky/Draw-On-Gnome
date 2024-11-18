@@ -176,6 +176,7 @@ export class AreaManager {
             area.set_position(monitor.x, monitor.y);
             area.set_size(monitor.width, monitor.height);
             area.leaveDrawingHandler = area.connect('leave-drawing-mode', this.toggleDrawing.bind(this));
+            area.updateActionModeHandler = area.connect('update-action-mode', this.updateActionMode.bind(this));
             area.pointerCursorChangedHandler = area.connect('pointer-cursor-changed', this.setCursor.bind(this));
             area.showOsdHandler = area.connect('show-osd', this.showOsd.bind(this));
             this.areas.push(area);
@@ -328,12 +329,12 @@ export class AreaManager {
         
         if (this.activeArea.get_parent() == Main.uiGroup) {
             Main.uiGroup.set_child_at_index(Main.layoutManager.keyboardBox, this.oldKeyboardIndex);
-            Main.uiGroup.remove_child(this.activeArea);
+            Main.uiGroup.remove_actor(this.activeArea);
             Main.layoutManager._backgroundGroup.insert_child_above(this.activeArea, Main.layoutManager._bgManagers[activeIndex].backgroundActor);
             if (!this.onDesktop)
                 this.activeArea.hide();
         } else {
-            Main.layoutManager._backgroundGroup.remove_child(this.activeArea);
+            Main.layoutManager._backgroundGroup.remove_actor(this.activeArea);
             Main.uiGroup.add_child(this.activeArea);
             // move the keyboard above the area to make it available with text entries
             this.oldKeyboardIndex = Main.uiGroup.get_children().indexOf(Main.layoutManager.keyboardBox);
@@ -415,6 +416,10 @@ export class AreaManager {
             this.indicator.sync(Boolean(this.activeArea));
     }
     
+    updateActionMode() {
+        Main.actionMode = (this.activeArea.isWriting ? this._WRITING_ACTION_MODE : this._DRAWING_ACTION_MODE) | Shell.ActionMode.NORMAL;
+    }
+    
     // Use level -1 to set no level through a signal.
     showOsd(emitter, icon, label, color, level, long) {
         let activeIndex = this.areas.indexOf(this.activeArea);
@@ -478,8 +483,9 @@ export class AreaManager {
     }
     
     removeAreas() {
-        for (const area of this.areas) {
+        for (const area in  this.areas) {
             area.disconnect(area.leaveDrawingHandler);
+            area.disconnect(area.updateActionModeHandler);
             area.disconnect(area.showOsdHandler);
             area.destroy();
         }
