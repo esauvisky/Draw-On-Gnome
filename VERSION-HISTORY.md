@@ -23,12 +23,12 @@
 
 - Initial Support for GNOME v42
 
-## v12 - March 2021
+## v12 - March 2022
 
 - Removed Intermediate Points (Improved Perfomance)
 - Fixed broken stylus/two cursors on Wayland 
 
-### November 2024
+### 2022
 
 - zhrexl took over as maintainer
 
