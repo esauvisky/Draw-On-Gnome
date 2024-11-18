@@ -26,7 +26,7 @@ Copy the following script to your Bash CLI and run it:
 bash <(wget -qO- https://raw.githubusercontent.com/daveprowse/scripts/refs/heads/main/doys-install.sh)
 ```
 
-> Note: If you are uncomfortable running the script, or cannot run the script, then install manually below.
+> IMPORTANT!!: Always check scripts before running them!! If you are uncomfortable running the script, or cannot run the script, then install manually below.
 
 The script will identify your version of GNOME and install the correct version of the extension automatically.
 
