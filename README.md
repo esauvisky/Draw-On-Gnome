@@ -31,7 +31,7 @@ The script will identify your version of GNOME and install the correct version o
 
 Then, logout and log back in, and enable the extension.
 
-## Option 2: Install Manually from the Repository Branch
+### Option 2: Install Manually from the Repository Branch
 
 1. Download or clone this repository branch
    - Download option: 
