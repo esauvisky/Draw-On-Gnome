@@ -18,19 +18,21 @@ Start drawing on your GNOME desktop with `Super+Alt+D`.
 
 ## Install
 
-**Use the following script:**
+### Option 1: Use the Automated Script
 
-# curl -s https://github.com/daveprowse/scripts/blob/main/doys-install.sh | bash
+**Copy the following script to your Bash CLI and run it:**
 
 ```bash
 wget -O - https://raw.githubusercontent.com/daveprowse/scripts/refs/heads/main/doys-install.sh && chmod +x doys-install.sh && bash -c ./doys-install.sh
 ```
 
+> Note: If you are not comfortable running the script, then install manually below.
+
 The script will identify your version of GNOME and install the correct version of the extension automatically.
 
 Then, logout and log back in, and enable the extension.
 
-**Or install manually:**
+## Option 2: Install Manually from the Repository Branch
 
 1. Download and decompress or clone the repository
 2. Place the directory (the one that contains `metadata.json`) in `~/.local/share/gnome-shell/extensions`
