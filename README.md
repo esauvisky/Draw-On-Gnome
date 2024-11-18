@@ -29,11 +29,13 @@ Copy the following script to your terminal and run it:
 bash <(wget -qO- https://raw.githubusercontent.com/daveprowse/scripts/refs/heads/main/doys-install.sh)
 ```
 
-> **IMPORTANT!!** Always check scripts before running them! If you are uncomfortable running the script, or cannot run the script, then install manually below.
+> **IMPORTANT!!** Always check scripts before running them! If you are uncomfortable running the script, or cannot run the script, then install manually with Option #2 below.
 
 The script will identify your version of GNOME (if it is between v42 and v47) and install the correct version of the extension automatically.
 
-When complete, logout and log back in, and enable the extension:
+When complete, logout and log back in 
+
+Then enable the extension:
 
 - In the CLI:
   ```console
@@ -48,6 +50,10 @@ When complete, logout and log back in, and enable the extension:
   - Locate Draw On Your Screen 3 and enable it.
 
    > Note: You can install the Gnome Extensions App with the package `gnome-shell-extensions-prefs` within your Linux distribution.
+
+Now go forth and use the tool by pressing `Super+Alt+D`.
+
+It's back to the drawing board my friends!
 
 ### Option 2: Install Manually from the Release or Repository Branch
 
