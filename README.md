@@ -23,7 +23,7 @@ Start drawing on your GNOME desktop with `Super+Alt+D`.
 Copy the following script to your Bash CLI and run it:
 
 ```bash
-wget -O - https://raw.githubusercontent.com/daveprowse/scripts/refs/heads/main/doys-install.sh && chmod +x doys-install.sh && bash -c ./doys-install.sh
+bash <(wget -qO- https://raw.githubusercontent.com/daveprowse/scripts/refs/heads/main/doys-install.sh)
 ```
 
 > Note: If you are uncomfortable running the script, or cannot run the script, then install manually below.
