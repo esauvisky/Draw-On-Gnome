@@ -51,7 +51,9 @@ Then enable the extension:
 
    > Note: You can install the Gnome Extensions App with the package `gnome-shell-extensions-prefs` within your Linux distribution.
 
-Now go forth and use the tool by pressing `Super+Alt+D`.
+Now go forth and use the tool by pressing `Super+Alt+D`. 
+
+> Note: You can discover the keyboard shortcuts by pressing `Ctrl+F1`. 
 
 It's back to the drawing board my friends!
 
