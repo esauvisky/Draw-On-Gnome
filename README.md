@@ -20,8 +20,10 @@ Start drawing on your GNOME desktop with `Super+Alt+D`.
 
 **Use the following script:**
 
+# curl -s https://github.com/daveprowse/scripts/blob/main/doys-install.sh | bash
+
 ```bash
-curl -s https://github.com/daveprowse/scripts/blob/main/doys-install.sh | bash
+wget -O - https://raw.githubusercontent.com/daveprowse/scripts/refs/heads/main/doys-install.sh && chmod +x doys-install.sh && bash -c ./doys-install.sh
 ```
 
 The script will identify your version of GNOME and install the correct version of the extension automatically.
