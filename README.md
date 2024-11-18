@@ -13,7 +13,7 @@ Start drawing on your GNOME desktop with `Super+Alt+D`.
 - Blackboard and Grid
 - Keep drawings on desktop background with persistence 
 - Multi-monitor support
-- Save your work!
+- Save your work with `Ctrl+S`!!
 
 ## Installation Methods for GNOMEv42-v44
 
