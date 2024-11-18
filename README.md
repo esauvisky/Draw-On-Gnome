@@ -7,14 +7,13 @@ Start drawing on your GNOME desktop with `Super+Alt+D`.
 
 ## Features
 
+- Draw over applications
 - Basic shapes (rectangle, circle, ellipse, line, curve, polygon, polyline, text, image, free)
 - Basic transformations (move, rotate, resize, stretch, mirror, inverse)
-- Smooth stroke
-- Draw over applications
-- Keep drawings on desktop background with persistence (notes, children's art ...)
+- Blackboard and Grid
+- Keep drawings on desktop background with persistence 
 - Multi-monitor support
-- Initial stylus support
-- Export to SVG
+- Save your work!
 
 ## Installation Methods for GNOMEv42-v44
 
