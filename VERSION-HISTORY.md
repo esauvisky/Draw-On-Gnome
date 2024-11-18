@@ -2,11 +2,11 @@
 
 ## v13.0 - November 2024
 
-**GNOMEv42-v44 version of DOYS**
+**GNOMEv42-v44 version of DOYS3**
 
 - Updated the GNOMEv42 version to incorporate various commits
 - Added support for GNOMEv43 and v44
-- Verified functionality on GNOMEv42 (Fedora 36), v43 (Debian 12), and v44 (Ubuntu 23.04 and Fedora 38).
+- Verified functionality on GNOMEv42 (Fedora 36 and Ubuntu 22.04), v43 (Debian 12), and v44 (Ubuntu 23.04 and Fedora 38).
 
 ### November 2024
 
