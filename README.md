@@ -16,7 +16,7 @@ Start drawing on your GNOME desktop with `Super+Alt+D`.
 - Initial stylus support
 - Export to SVG
 
-## Installation Methods
+## Installation Methods for GNOMEv42-v44
 
 ### Option 1: Use the Automated Script
 
