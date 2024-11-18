@@ -33,17 +33,21 @@ Then, logout and log back in, and enable the extension.
 
 ## Option 2: Install Manually from the Repository Branch
 
-1. Download and decompress or clone this repository branch
+1. Download or clone this repository branch
    - Download option: 
   
       ```console
       wget https://github.com/daveprowse/DrawOnYourScreen3/releases/download/v13.0-GNOME-v42-v44/GNOMEv42.tar.xz
       ```
-   - Clone option: 
+
+      Then, decompress the tar file: `tar -xvf GNOMEv42.tar.xz`
+
+   - Clone option:
   
       ```console
       git clone -b GNOMEv42 https://github.com/daveprowse/DrawOnYourScreen3
       ```
+
 2. Place the directory (the one that contains `metadata.json`) in `~/.local/share/gnome-shell/extensions`
 3. Change the directory name to `draw-on-your-screen3@daveprowse.github.io`
 4. Xorg: type `alt + F2` and `r` to restart gnome-shell  
