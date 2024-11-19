@@ -38,6 +38,7 @@ When complete, logout and log back in
 Then enable the extension:
 
 - In the CLI:
+
   ```console
   gnome-extensions enable draw-on-your-screen3@daveprowse.github.io
   ```
@@ -51,9 +52,9 @@ Then enable the extension:
 
    > Note: You can install the Gnome Extensions App with the package `gnome-shell-extensions-prefs` within your Linux distribution.
 
-Now go forth and use the tool by pressing `Super+Alt+D`. 
+Now go forth and use the tool by pressing `Super + Alt + D`.
 
-> Note: You can discover the keyboard shortcuts by pressing `Ctrl+F1`. 
+> Note: You can discover the keyboard shortcuts by pressing `Ctrl + F1`.
 
 It's back to the drawing board my friends!
 
