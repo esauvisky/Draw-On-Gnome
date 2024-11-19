@@ -23,7 +23,7 @@ Thank you to all the committers! 😎
 
 ### Option 1: Use the Automated Script
 
-Copy the following command to your terminal and press `enter` to run it:
+Copy the following command to your Bash terminal and press `enter` to run it:
 
 ```bash
 bash <(wget -qO- https://raw.githubusercontent.com/daveprowse/scripts/refs/heads/main/doys-install.sh)
