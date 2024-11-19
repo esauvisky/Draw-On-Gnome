@@ -29,7 +29,7 @@ Copy the following command to your Bash terminal and press `enter` to run it:
 bash <(wget -qO- https://raw.githubusercontent.com/daveprowse/scripts/refs/heads/main/doys-install.sh)
 ```
 
-> **IMPORTANT!!** Always check scripts before running them! If you are uncomfortable running the script, or cannot run the script, then install manually with Option #2 below.
+> **IMPORTANT!!** Always check scripts before running them! If you are uncomfortable running the script, or cannot run the script, then install manually with [Option #2](#option-2-install-manually-from-the-release-or-repository-branch) below.
 
 The script will identify your version of GNOME (if it is between v42 and v47) and install the correct version of the extension automatically.
 
@@ -60,7 +60,7 @@ It's back to the drawing board my friends!
 
 ### Option 2: Install Manually from the Release or Repository Branch
 
-> Note: For GNOME versions besides 47 & 46, see below.
+> Note: For GNOME versions other than 47 & 46, see [Other GNOME Versions](#other-gnome-versions) below.
 
 1. Download or clone
    - Download option:
@@ -92,6 +92,7 @@ It's back to the drawing board my friends!
 **ENJOY!**
 
 ---
+
 ### Other GNOME Versions
 
 If you prefer not to use the script above, and have an older version of GNOME, choose from a download method below and then follow steps 2 through 6 above.

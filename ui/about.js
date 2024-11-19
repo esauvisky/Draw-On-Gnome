@@ -48,11 +48,11 @@ const AboutPage = GObject.registerClass({
         scrolledWindow.set_child(vbox);
 
         // Translators: you are free to translate the extension name, that is displayed in About page, or not
-        let name = "<b> " + _("Draw On You Screen 2") + "</b>";
+        let name = "<b> " + _("Draw On You Screen 3") + "</b>";
         // Translators: version number in "About" page
         let version = _("Version %f").format(extensionPreferences.metadata.version);
         // Translators: you are free to translate the extension description, that is displayed in About page, or not
-        let description = _("This is a forked from Abakkk original Draw On Your Screen Extension.\nStart drawing with Super+Alt+D and save your beautiful work by taking a screenshot");
+        let description = _("Draw on your GNOME Desktop!.\nStart by pressing 'Super+Alt+D'. Have fun! :)");
         let link = "<span><a href=\"" + extensionPreferences.metadata.url + "\">" + extensionPreferences.metadata.url + "</a></span>";
         let licenseName = _("GNU General Public License, version 3 or later");
         let licenseLink = "https://www.gnu.org/licenses/gpl-3.0.html";
@@ -84,6 +84,15 @@ const AboutPage = GObject.registerClass({
         rightBox.append(new Gtk.Label({
             wrap: true, valign: Gtk.Align.START, halign: Gtk.Align.START, justify: Gtk.Justification.LEFT,
             use_markup: true, label: "<small><a href=\"https://github.com/zhrexl\">zhrexl</a></small>"
+        }));
+
+        leftBox.append(new Gtk.Label({
+            wrap: true, valign: Gtk.Align.START, halign: Gtk.Align.END, justify: Gtk.Justification.RIGHT,
+            use_markup: true, label: "<small>" + _("Forked by") + "</small>"
+        }));
+        rightBox.append(new Gtk.Label({
+            wrap: true, valign: Gtk.Align.START, halign: Gtk.Align.START, justify: Gtk.Justification.LEFT,
+            use_markup: true, label: "<small><a href=\"https://github.com/daveprowse\">daveprowse</a></small>"
         }));
 
         creditBox.append(leftBox);

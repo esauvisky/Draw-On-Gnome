@@ -7,7 +7,7 @@
 - [ ] Menu mod: Shortcut key for Color picker to `Ctrl+0` no KP
 - [ ] Smooth line fix
 - [ ] Snap to grid feature
-- [ ] Laser feature (Like Draw Pen), maybe a right-click and drag (like Owl Bear), or a new shortcut or something...
+- [ ] Laser feature (Like Draw Pen), maybe a right-click and drag (like Owl Bear), or a new shortcut or perhaps just hold the `shift` key while mousing or stylus-hovering.
 
 If you have any suggestions, feel free to post them here: 
 https://github.com/daveprowse/DrawOnYourScreen3/issues
