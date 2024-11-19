@@ -55,6 +55,6 @@ Then, logout and log back in, and enable the extension.
 5. Enable the extension with GNOME Extensions command or application
 6. `Super + Alt + D` to test
 
-Issues? Let us know at [this link](https://github.com/daveprowse/DrawOnYourScreen3/issues). 
+Issues? Let us know at [this link](https://github.com/daveprowse/DrawOnYourScreen3/issues).
 
 **ENJOY!**

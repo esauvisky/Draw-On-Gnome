@@ -2,7 +2,7 @@
 
 ## v13.0 - November 2024
 
-**GNOMEv42-v44 version of DOYS3**
+**GNOMEv42-v44 version of DOYS3**.
 
 - Updated the GNOMEv42 version to incorporate various commits
 - Added support for GNOMEv43 and v44
