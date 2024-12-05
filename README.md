@@ -1,11 +1,13 @@
 # Draw On Your Screen 3
 
-Start drawing on your GNOME desktop with `Super+Alt+D`.
+Start drawing on your GNOME desktop with **`Super+Alt+D`**.
+
+Documentation is **[here](https://daveprowse.github.io/DrawOnYourScreen3/)**. For updates, click **[here](https://daveprowse.github.io/DrawOnYourScreen3/blog/)**.
 
 - Forked from: https://github.com/zhrexl/DrawOnYourScreen2
 - Original fork: https://codeberg.org/som/DrawOnYourScreen
 
-Thank you to all the committers! 😎
+Thank you to all the contributors! 😎
 
 ## Features
 
@@ -19,7 +21,9 @@ Thank you to all the committers! 😎
 
 ## Installation Methods for GNOME v47 and v46
 
-> Note: We are working on getting the extension approved by GNOME so that it will be listed on https://extensions.gnome.org (E.G.O.) - Stay tuned!
+> Note: We are working on getting the extension approved by GNOME so that it will be listed on https://extensions.gnome.org (E.G.O.) 
+
+> Stay tuned! Click [here](https://daveprowse.github.io/DrawOnYourScreen3/blog/) for updates.
 
 ### Option 1: Use the Automated Script
 
