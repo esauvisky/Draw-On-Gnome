@@ -1,5 +1,7 @@
 # Draw On Your Screen 3
 
+![DOYS3](https://daveprowse.github.io/DrawOnYourScreen3/images/doys-logo2.png)
+
 Start drawing on your GNOME desktop with **`Super+Alt+D`**.
 
 Documentation is **[here](https://daveprowse.github.io/DrawOnYourScreen3/)**. For updates, click **[here](https://daveprowse.github.io/DrawOnYourScreen3/blog/)**.
