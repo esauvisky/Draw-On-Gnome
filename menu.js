@@ -19,38 +19,46 @@
  */
 
 /* jslint esversion: 6 */
+/* exported DisplayStrings, DrawingMenu */
 
-import Clutter from 'gi://Clutter';
-import GLib from 'gi://GLib';
-import GObject from 'gi://GObject';
-import Gtk from 'gi://Gtk';
-import St from 'gi://St';
+const Clutter = imports.gi.Clutter;
+const GLib = imports.gi.GLib;
+const GObject = imports.gi.GObject;
+const Gtk = imports.gi.Gtk;
+const Lang = imports.lang;
+const St = imports.gi.St;
 
-import * as BoxPointer from 'resource:///org/gnome/shell/ui/boxpointer.js';
-import * as Dash from 'resource:///org/gnome/shell/ui/dash.js';
-import * as Main from 'resource:///org/gnome/shell/ui/main.js';
-import * as PopupMenu from 'resource:///org/gnome/shell/ui/popupMenu.js';
-import * as Slider from 'resource:///org/gnome/shell/ui/slider.js';
+const BoxPointer = imports.ui.boxpointer;
+const Config = imports.misc.config;
+const Dash = imports.ui.dash;
+const Main = imports.ui.main;
+const PopupMenu = imports.ui.popupMenu;
+const Slider = imports.ui.slider;
 
-import * as Config from 'resource:///org/gnome/shell/misc/config.js'
-
-import {gettext as _, pgettext} from 'resource:///org/gnome/shell/extensions/extension.js';
-
-import { CURATED_UUID as UUID } from './utils.js';
-
-
+const ExtensionUtils = imports.misc.extensionUtils;
+const Me = ExtensionUtils.getCurrentExtension();
+const Files = Me.imports.files;
+const _ = imports.gettext.domain(Me.metadata['gettext-domain']).gettext;
+const pgettext = imports.gettext.domain(Me.metadata['gettext-domain']).pgettext;
 
 const GS_VERSION = Config.PACKAGE_VERSION;
 // 150 labels with font-family style take ~15Mo
 const FONT_FAMILY_STYLE = true;
 // use 'login-dialog-message-warning' class in order to get GS theme warning color (default: #f57900)
 const WARNING_COLOR_STYLE_CLASS_NAME = 'login-dialog-message-warning';
+const UUID = Me.uuid.replace(/@/gi, '_at_').replace(/[^a-z0-9+_-]/gi, '_');
+const TextAlignmentIcon = { 0: Files.Icons.LEFT_ALIGNED, 1: Files.Icons.CENTERED, 2: Files.Icons.RIGHT_ALIGNED };
 
+const getActor = function(object) {
+    return GS_VERSION < '3.33.0' ? object.actor : object;
+};
 
-
+const getSummary = function(settingKey) {
+    return Me.internalShortcutSettings.settings_schema.get_key(settingKey).get_summary();
+};
 
 // Used by both menu and osd notifications.
-export const DisplayStrings = {
+var DisplayStrings = {
     getDashedLine: function(dashed) {
         return dashed ? _("Dashed line") :
                         // Translators: as the alternative to "Dashed line"
@@ -129,19 +137,16 @@ export const DisplayStrings = {
         if (!this._Tool)
             this._Tool = { 0: pgettext("drawing-tool", "Free drawing"), 1: pgettext("drawing-tool", "Line"), 2: pgettext("drawing-tool", "Ellipse"),
                            3: pgettext("drawing-tool", "Rectangle"), 4: pgettext("drawing-tool", "Text"), 5: pgettext("drawing-tool", "Polygon"),
-                           6: pgettext("drawing-tool", "Polyline"), 7: pgettext("drawing-tool", "Image"), 8: pgettext("drawing-tool", "Arrow"),
+                           6: pgettext("drawing-tool", "Polyline"), 7: pgettext("drawing-tool", "Image"),
                            100: pgettext("drawing-tool", "Move"), 101: pgettext("drawing-tool", "Resize"), 102: pgettext("drawing-tool", "Mirror") };
         return this._Tool;
     }
 };
 
-
-export const DrawingMenu = GObject.registerClass({
-    GTypeName: `${UUID}-DrawingMenu`,
-}, class DrawingMenu extends GObject.Object {
-    _init(extension, area, monitor, DrawingTool, areaManagerUtils) {
-        super._init({});
-        this._extension = extension;
+var DrawingMenu = new Lang.Class({
+    Name: `${UUID}-DrawingMenu`,
+    
+    _init: function(area, monitor, DrawingTool, areaManagerUtils) {
         this.area = area;
         this.monitor = monitor;
         this.DrawingTool = DrawingTool;
@@ -152,7 +157,7 @@ export const DrawingMenu = GObject.registerClass({
         this.menuManager = new PopupMenu.PopupMenuManager(GS_VERSION < '3.33.0' ? { actor: this.area } : this.area);
         this.menuManager.addMenu(this.menu);
         
-        Main.layoutManager.uiGroup.add_child(this.menu.actor);
+        Main.layoutManager.uiGroup.add_actor(this.menu.actor);
         
         this.menu.actor.add_style_class_name('background-menu draw-on-your-screen-menu');
         this.menu.actor.hide();
@@ -173,22 +178,24 @@ export const DrawingMenu = GObject.registerClass({
                 this.saveDrawingSubMenu.close();
             menuCloseFunc.bind(this.menu)(animate);
         };
-    }
+    },
     
-    disable() {
+    disable: function() {
         delete this.area;
         delete this.DrawingTool;
         delete this.areaManagerUtils;
         this.menuManager.removeMenu(this.menu);
-        Main.layoutManager.uiGroup.remove_child(this.menu.actor);
+        Main.layoutManager.uiGroup.remove_actor(this.menu.actor);
         this.menu.destroy();
-    }
+    },
     
-    _onMenuOpenStateChanged(menu, open) {
+    _onMenuOpenStateChanged: function(menu, open) {
         if (open) {
             this.area.setPointerCursor('DEFAULT');
         } else {
             this.area.updatePointerCursor();
+            // actionMode has changed, set previous actionMode in order to keep internal shortcuts working
+            this.area.updateActionMode();
             this.area.grab_key_focus();
         }
         
@@ -196,18 +203,18 @@ export const DrawingMenu = GObject.registerClass({
         let scaleFactor = St.ThemeContext.get_for_stage(global.stage).scale_factor;
         let maxHeight = Math.round(workArea.height / scaleFactor);
         this.menu.actor.set_style(`max-height:${maxHeight}px;`);
-    }
+    },
     
-    popup() {
+    popup: function() {
         if (this.menu.isOpen) {
             this.close();
         } else {
             this.open();
             this.menu.actor.navigate_focus(null, Gtk.DirectionType.TAB_FORWARD, false);
         }
-    }
+    },
     
-    open(x, y) {
+    open: function(x, y) {
         if (this.menu.isOpen)
             return;
         if (x === undefined || y === undefined)
@@ -218,53 +225,53 @@ export const DrawingMenu = GObject.registerClass({
         this.menu._arrowAlignment = (y - monitor.y) / monitor.height;
         this.menu.open(BoxPointer.PopupAnimation.NONE);
         this.menuManager.ignoreRelease();
-    }
+    },
     
-    close() {
+    close: function() {
         if (this.menu.isOpen)
             this.menu.close();
-    }
+    },
     
-    _redisplay() {
+    _redisplay: function() {
         this.menu.removeAll();
         
         let groupItem = new PopupMenu.PopupBaseMenuItem({ reactive: false, can_focus: false, style_class: 'draw-on-your-screen-menu-group-item' });
-        this.undoButton = new ActionButton(this._getSummary('undo'), 'edit-undo-symbolic', this.area.undo.bind(this.area), this._updateActionSensitivity.bind(this));
-        this.redoButton = new ActionButton(this._getSummary('redo'), 'edit-redo-symbolic', this.area.redo.bind(this.area), this._updateActionSensitivity.bind(this));
+        this.undoButton = new ActionButton(getSummary('undo'), 'edit-undo-symbolic', this.area.undo.bind(this.area), this._updateActionSensitivity.bind(this));
+        this.redoButton = new ActionButton(getSummary('redo'), 'edit-redo-symbolic', this.area.redo.bind(this.area), this._updateActionSensitivity.bind(this));
         this.eraseButton = new ActionButton(_("Erase"), 'edit-clear-all-symbolic', this.area.deleteLastElement.bind(this.area), this._updateActionSensitivity.bind(this));
-        this.smoothButton = new ActionButton(_("Smooth"), this._extension.FILES.ICONS.SMOOTH, this.area.smoothLastElement.bind(this.area), this._updateActionSensitivity.bind(this));
+        this.smoothButton = new ActionButton(_("Smooth"), Files.Icons.SMOOTH, this.area.smoothLastElement.bind(this.area), this._updateActionSensitivity.bind(this));
         this.eraseButton.child.add_style_class_name('draw-on-your-screen-menu-destructive-button');
-        this._getActor(groupItem).add_child(this.undoButton);
-        this._getActor(groupItem).add_child(this.redoButton);
-        this._getActor(groupItem).add_child(this.eraseButton);
-        this._getActor(groupItem).add_child(this.smoothButton);
+        getActor(groupItem).add_child(this.undoButton);
+        getActor(groupItem).add_child(this.redoButton);
+        getActor(groupItem).add_child(this.eraseButton);
+        getActor(groupItem).add_child(this.smoothButton);
         this.menu.addMenuItem(groupItem);
         this._addSeparator(this.menu, true);
         
         this.toolItem = this._addToolSubMenuItem(this.menu, this._updateSectionVisibility.bind(this));
-        this.paletteItem = this._addPaletteSubMenuItem(this.menu, this._extension.FILES.ICONS.PALETTE);
-        this.colorItem = this._addColorSubMenuItem(this.menu, this._extension.FILES.ICONS.COLOR);
-        this.fillItem = this._addSwitchItem(this.menu, DisplayStrings.getFill(true), this._extension.FILES.ICONS.STROKE, this._extension.FILES.ICONS.FILL, this.area, 'fill', this._updateSectionVisibility.bind(this));
+        this.paletteItem = this._addPaletteSubMenuItem(this.menu, Files.Icons.PALETTE);
+        this.colorItem = this._addColorSubMenuItem(this.menu, Files.Icons.COLOR);
+        this.fillItem = this._addSwitchItem(this.menu, DisplayStrings.getFill(true), Files.Icons.STROKE, Files.Icons.FILL, this.area, 'fill', this._updateSectionVisibility.bind(this));
         this.fillSection = new PopupMenu.PopupMenuSection();
         this.fillSection.itemActivated = () => {};
-        this.fillRuleItem = this._addSwitchItem(this.fillSection, DisplayStrings.FillRule[1], this._extension.FILES.ICONS.FILLRULE_NONZERO, this._extension.FILES.ICONS.FILLRULE_EVENODD, this.area, 'currentEvenodd');
+        this.fillRuleItem = this._addSwitchItem(this.fillSection, DisplayStrings.FillRule[1], Files.Icons.FILLRULE_NONZERO, Files.Icons.FILLRULE_EVENODD, this.area, 'currentEvenodd');
         this.menu.addMenuItem(this.fillSection);
         this._addSeparator(this.menu);
         
         let lineSection = new PopupMenu.PopupMenuSection();
         this._addSliderItem(lineSection, this.area, 'currentLineWidth');
-        this._addSubMenuItem(lineSection, this._extension.FILES.ICONS.LINEJOIN, DisplayStrings.LineJoin, this.area, 'currentLineJoin');
-        this._addSubMenuItem(lineSection, this._extension.FILES.ICONS.LINECAP, DisplayStrings.LineCap, this.area, 'currentLineCap');
-        this._addSwitchItem(lineSection, DisplayStrings.getDashedLine(true), this._extension.FILES.ICONS.FULL_LINE, this._extension.FILES.ICONS.DASHED_LINE, this.area, 'dashedLine');
+        this._addSubMenuItem(lineSection, Files.Icons.LINEJOIN, DisplayStrings.LineJoin, this.area, 'currentLineJoin');
+        this._addSubMenuItem(lineSection, Files.Icons.LINECAP, DisplayStrings.LineCap, this.area, 'currentLineCap');
+        this._addSwitchItem(lineSection, DisplayStrings.getDashedLine(true), Files.Icons.FULL_LINE, Files.Icons.DASHED_LINE, this.area, 'dashedLine');
         this._addSeparator(lineSection);
         this.menu.addMenuItem(lineSection);
         lineSection.itemActivated = () => {};
         this.lineSection = lineSection;
         
         let fontSection = new PopupMenu.PopupMenuSection();
-        this._addFontFamilySubMenuItem(fontSection, this._extension.FILES.ICONS.FONT_FAMILY);
-        this._addSubMenuItem(fontSection, this._extension.FILES.ICONS.FONT_WEIGHT, DisplayStrings.FontWeight, this.area, 'currentFontWeight');
-        this._addSubMenuItem(fontSection, this._extension.FILES.ICONS.FONT_STYLE, DisplayStrings.FontStyle, this.area, 'currentFontStyle');
+        this._addFontFamilySubMenuItem(fontSection, Files.Icons.FONT_FAMILY);
+        this._addSubMenuItem(fontSection, Files.Icons.FONT_WEIGHT, DisplayStrings.FontWeight, this.area, 'currentFontWeight');
+        this._addSubMenuItem(fontSection, Files.Icons.FONT_STYLE, DisplayStrings.FontStyle, this.area, 'currentFontStyle');
         this._addTextAlignmentSubMenuItem(fontSection);
         this._addSeparator(fontSection);
         this.menu.addMenuItem(fontSection);
@@ -278,10 +285,10 @@ export const DrawingMenu = GObject.registerClass({
         imageSection.itemActivated = () => {};
         this.imageSection = imageSection;
         
-        this._addSimpleSwitchItem(this.menu, this._getSummary('toggle-panel-and-dock-visibility'), !!this.areaManagerUtils.getHiddenList(), this.areaManagerUtils.togglePanelAndDockOpacity);
-        this._addSimpleSwitchItem(this.menu, this._getSummary('toggle-background'), this.area.hasBackground, this.area.toggleBackground.bind(this.area));
-        this._addSimpleSwitchItem(this.menu, this._getSummary('toggle-grid'), this.area.hasGrid, this.area.toggleGrid.bind(this.area));
-        this._addSimpleSwitchItem(this.menu, this._getSummary('toggle-square-area'), this.area.isSquareArea, this.area.toggleSquareArea.bind(this.area));
+        this._addSimpleSwitchItem(this.menu, getSummary('toggle-panel-and-dock-visibility'), !!this.areaManagerUtils.getHiddenList(), this.areaManagerUtils.togglePanelAndDockOpacity);
+        this._addSimpleSwitchItem(this.menu, getSummary('toggle-background'), this.area.hasBackground, this.area.toggleBackground.bind(this.area));
+        this._addSimpleSwitchItem(this.menu, getSummary('toggle-grid'), this.area.hasGrid, this.area.toggleGrid.bind(this.area));
+        this._addSimpleSwitchItem(this.menu, getSummary('toggle-square-area'), this.area.isSquareArea, this.area.toggleSquareArea.bind(this.area));
         this._addSeparator(this.menu);
         
         this._addDrawingNameItem(this.menu);
@@ -290,21 +297,21 @@ export const DrawingMenu = GObject.registerClass({
         this._addSeparator(this.menu);
         
         groupItem = new PopupMenu.PopupBaseMenuItem({ reactive: false, can_focus: false, style_class: 'draw-on-your-screen-menu-group-item' });
-        this.saveButton = new ActionButton(this._getSummary('save-as-json'), 'document-save-symbolic', this.area.saveAsJson.bind(this.area, false, this._onDrawingSaved.bind(this)), null);
-        this.svgButton = new ActionButton(this._getSummary('export-to-svg'), this._extension.FILES.ICONS.DOCUMENT_EXPORT, this.area.exportToSvg.bind(this.area), null);
-        this.prefsButton = new ActionButton(this._getSummary('open-preferences'), 'document-page-setup-symbolic', this.areaManagerUtils.openPreferences, null);
-        this.helpButton = new ActionButton(this._getSummary('toggle-help'), 'preferences-desktop-keyboard-shortcuts-symbolic', () => { this.close(); this.area.toggleHelp(); }, null);
-        this._getActor(groupItem).add_child(this.saveButton);
-        this._getActor(groupItem).add_child(this.svgButton);
-        this._getActor(groupItem).add_child(this.prefsButton);
-        this._getActor(groupItem).add_child(this.helpButton);
+        this.saveButton = new ActionButton(getSummary('save-as-json'), 'document-save-symbolic', this.area.saveAsJson.bind(this.area, false, this._onDrawingSaved.bind(this)), null);
+        this.svgButton = new ActionButton(getSummary('export-to-svg'), Files.Icons.DOCUMENT_EXPORT, this.area.exportToSvg.bind(this.area), null);
+        this.prefsButton = new ActionButton(getSummary('open-preferences'), 'document-page-setup-symbolic', this.areaManagerUtils.openPreferences, null);
+        this.helpButton = new ActionButton(getSummary('toggle-help'), 'preferences-desktop-keyboard-shortcuts-symbolic', () => { this.close(); this.area.toggleHelp(); }, null);
+        getActor(groupItem).add_child(this.saveButton);
+        getActor(groupItem).add_child(this.svgButton);
+        getActor(groupItem).add_child(this.prefsButton);
+        getActor(groupItem).add_child(this.helpButton);
         this.menu.addMenuItem(groupItem);
         
         this._updateActionSensitivity();
         this._updateSectionVisibility();
-    }
+    },
     
-    _updateActionSensitivity() {
+    _updateActionSensitivity: function() {
         this.undoButton.child.reactive = this.area.elements.length > 0;
         this.redoButton.child.reactive = this.area.undoneElements.length > 0 || (this.area.elements.length && this.area.elements[this.area.elements.length - 1].canUndo);
         this.eraseButton.child.reactive = this.area.elements.length > 0;
@@ -312,9 +319,9 @@ export const DrawingMenu = GObject.registerClass({
         this.saveButton.child.reactive = this.area.elements.length > 0;
         this.svgButton.child.reactive = this.area.elements.length > 0;
         this.saveDrawingSubMenuItem.setSensitive(this.area.elements.length > 0);
-    }
+    },
     
-    _updateSectionVisibility() {
+    _updateSectionVisibility: function() {
         let [isText, isImage] = [this.area.currentTool == this.DrawingTool.TEXT, this.area.currentTool == this.DrawingTool.IMAGE];
         this.lineSection.actor.visible = !isText && !isImage;
         this.fontSection.actor.visible = isText;
@@ -326,13 +333,13 @@ export const DrawingMenu = GObject.registerClass({
             this.fillSection.actor.show();
         else
             this.fillSection.actor.hide();
-    }
+    },
     
-    _addSwitchItem(menu, label, iconFalse, iconTrue, target, targetProperty, onToggled) {
+    _addSwitchItem: function(menu, label, iconFalse, iconTrue, target, targetProperty, onToggled) {
         let item = new PopupMenu.PopupSwitchMenuItem(label, target[targetProperty]);
         
         item.icon = new St.Icon({ style_class: 'popup-menu-icon' });
-        this._getActor(item).insert_child_at_index(item.icon, 1);
+        getActor(item).insert_child_at_index(item.icon, 1);
         let icon = target[targetProperty] ? iconTrue : iconFalse;
         if (icon)
             item.icon.set_gicon(icon);
@@ -347,15 +354,15 @@ export const DrawingMenu = GObject.registerClass({
         });
         menu.addMenuItem(item);
         return item;
-    }
+    },
     
-    _addSimpleSwitchItem(menu, label, active, onToggled) {
+    _addSimpleSwitchItem: function(menu, label, active, onToggled) {
         let item = new PopupMenu.PopupSwitchMenuItem(label, active);
         item.connect('toggled', onToggled);
         menu.addMenuItem(item);
-    }
+    },
     
-    _addSliderItem(menu, target, targetProperty) {
+    _addSliderItem: function(menu, target, targetProperty) {
         let item = new PopupMenu.PopupBaseMenuItem({ activate: false });
         let label = new St.Label({ text: DisplayStrings.getPixels(target[targetProperty]), style_class: 'draw-on-your-screen-menu-slider-label' });
         let slider = new Slider.Slider(target[targetProperty] / 50);
@@ -364,7 +371,6 @@ export const DrawingMenu = GObject.registerClass({
             slider.connect('value-changed', (slider, value, property) => {
                 target[targetProperty] = Math.max(Math.round(value * 50), 0);
                 label.set_text(DisplayStrings.getPixels(target[targetProperty]));
-                this._extension.drawingSettings.set_int("tool-size", target[targetProperty]);
                 if (target[targetProperty] === 0)
                     label.add_style_class_name(WARNING_COLOR_STYLE_CLASS_NAME);
                 else
@@ -374,7 +380,6 @@ export const DrawingMenu = GObject.registerClass({
             slider.connect('notify::value', () => {
                 target[targetProperty] = Math.max(Math.round(slider.value * 50), 0);
                 label.set_text(DisplayStrings.getPixels(target[targetProperty]));
-                this._extension.drawingSettings.set_int("tool-size", target[targetProperty]);
                 if (target[targetProperty] === 0)
                     label.add_style_class_name(WARNING_COLOR_STYLE_CLASS_NAME);
                 else
@@ -382,15 +387,15 @@ export const DrawingMenu = GObject.registerClass({
             });
         }
         
-        this._getActor(slider).x_expand = true;
-        this._getActor(item).add_child(this._getActor(slider));
-        this._getActor(item).add_child(label);
+        getActor(slider).x_expand = true;
+        getActor(item).add_child(getActor(slider));
+        getActor(item).add_child(label);
         if (slider.onKeyPressEvent)
-            this._getActor(item).connect('key-press-event', slider.onKeyPressEvent.bind(slider));
+            getActor(item).connect('key-press-event', slider.onKeyPressEvent.bind(slider));
         menu.addMenuItem(item);
-    }
+    },
     
-    _addSubMenuItem(menu, icon, obj, target, targetProperty) {
+    _addSubMenuItem: function(menu, icon, obj, target, targetProperty) {
         let item = new PopupMenu.PopupSubMenuMenuItem(String(obj[target[targetProperty]]), icon ? true : false);
         
         item.icon.set_gicon(icon);
@@ -408,20 +413,20 @@ export const DrawingMenu = GObject.registerClass({
                 });
                 
                 subItem.label.get_clutter_text().set_use_markup(true);
-                this._getActor(subItem).connect('key-focus-in', updateSubMenuAdjustment);
+                getActor(subItem).connect('key-focus-in', updateSubMenuAdjustment);
             });
             return GLib.SOURCE_REMOVE;
         });
         
         menu.addMenuItem(item);
-    }
+    },
     
-    _addToolSubMenuItem(menu, callback) {
+    _addToolSubMenuItem: function(menu, callback) {
         let item = new PopupMenu.PopupSubMenuMenuItem('', true);
         item.update = () => {
             item.label.set_text(DisplayStrings.Tool[this.area.currentTool]);
             let toolName = this.DrawingTool.getNameOf(this.area.currentTool);
-            item.icon.set_gicon(this._extension.FILES.ICONS[`TOOL_${toolName}`]);
+            item.icon.set_gicon(Files.Icons[`TOOL_${toolName}`]);
         };
         item.update();
         
@@ -431,7 +436,7 @@ export const DrawingMenu = GObject.registerClass({
             Object.keys(DisplayStrings.Tool).forEach(key => {
                 let text = DisplayStrings.Tool[key];
                 let toolName = this.DrawingTool.getNameOf(key);
-                let subItemIcon = this._extension.FILES.ICONS[`TOOL_${toolName}`];
+                let subItemIcon = Files.Icons[`TOOL_${toolName}`];
                 let subItem = item.menu.addAction(text, () => {
                     this.area.currentTool = Number(key);
                     item.update();
@@ -439,7 +444,7 @@ export const DrawingMenu = GObject.registerClass({
                 }, subItemIcon);
                 
                 subItem.label.get_clutter_text().set_use_markup(true);
-                this._getActor(subItem).connect('key-focus-in', updateSubMenuAdjustment);
+                getActor(subItem).connect('key-focus-in', updateSubMenuAdjustment);
                 
                 // change the display order of tools
                 if (key == this.DrawingTool.POLYGON)
@@ -452,9 +457,9 @@ export const DrawingMenu = GObject.registerClass({
         
         menu.addMenuItem(item);
         return item;
-    }
+    },
     
-    _addPaletteSubMenuItem(menu, icon) {
+    _addPaletteSubMenuItem: function(menu, icon) {
         let text = _(this.area.currentPalette[0] || "Palette");
         let item = new PopupMenu.PopupSubMenuMenuItem(text, true);
         item.icon.set_gicon(icon);
@@ -472,16 +477,16 @@ export const DrawingMenu = GObject.registerClass({
                     this.area.currentPalette = palette;
                     this._populateColorSubMenu();
                 });
-                this._getActor(subItem).connect('key-focus-in', updateSubMenuAdjustment);
+                getActor(subItem).connect('key-focus-in', updateSubMenuAdjustment);
             });
             return GLib.SOURCE_REMOVE;
         });
         
         menu.addMenuItem(item);
         return item;
-    }
+    },
     
-    _addColorSubMenuItem(menu, icon) {
+    _addColorSubMenuItem: function(menu, icon) {
         let item = new PopupMenu.PopupSubMenuMenuItem(_("Color"), true);
         this.colorSubMenu = item.menu;
         item.icon.set_gicon(icon);
@@ -493,9 +498,9 @@ export const DrawingMenu = GObject.registerClass({
                 this.area.pickColor();
             };
             // Translators: It is displayed in a menu button tooltip or as a shortcut action description, so it should NOT use the imperative mood.
-            let colorPickerButton = new ActionButton(_("Pick a color"), this._extension.FILES.ICONS.COLOR_PICKER, colorPickerCallback, null, true);
-            let index = this._getActor(item).get_children().length - 1;
-            this._getActor(item).insert_child_at_index(colorPickerButton, index);
+            let colorPickerButton = new ActionButton(_("Pick a color"), Files.Icons.COLOR_PICKER, colorPickerCallback, null, true);
+            let index = getActor(item).get_children().length - 1;
+            getActor(item).insert_child_at_index(colorPickerButton, index);
         }
         
         item.menu.itemActivated = item.menu.close;
@@ -503,27 +508,26 @@ export const DrawingMenu = GObject.registerClass({
         this._populateColorSubMenu();
         menu.addMenuItem(item);
         return item;
-    }
+    },
     
-    _populateColorSubMenu() {
+    _populateColorSubMenu: function() {
         this.colorSubMenu.removeAll();
         GLib.idle_add(GLib.PRIORITY_DEFAULT_IDLE, () => {
             this.area.colors.forEach(color => {
                 let text = String(color);
                 let subItem = this.colorSubMenu.addAction(text, () => {
                     this.area.currentColor = color;
-                    this._extension.drawingSettings.set_string("tool-color", color.to_string());
                     this.colorItem.icon.set_style(`color:${color.to_string().slice(0, 7)};`);
                 });
                 // Foreground color markup is not displayed since 3.36, use style instead but the transparency is lost.
                 subItem.label.set_style(`color:${color.to_string().slice(0, 7)};`);
-                this._getActor(subItem).connect('key-focus-in', updateSubMenuAdjustment);
+                getActor(subItem).connect('key-focus-in', updateSubMenuAdjustment);
             });
             return GLib.SOURCE_REMOVE;
         });
-    }
+    },
     
-    _addFontFamilySubMenuItem(menu, icon) {
+    _addFontFamilySubMenuItem: function(menu, icon) {
         let item = new PopupMenu.PopupSubMenuMenuItem(DisplayStrings.getFontFamily(this.area.currentFontFamily), true);
         item.icon.set_gicon(icon);
         
@@ -544,18 +548,17 @@ export const DrawingMenu = GObject.registerClass({
                             subItem.label.set_style(`font-family:${family}`);
                         });
                     
-                    this._getActor(subItem).connect('key-focus-in', updateSubMenuAdjustment);
+                    getActor(subItem).connect('key-focus-in', updateSubMenuAdjustment);
                 });
             }
             item.menu.openOld();
         };
         
         menu.addMenuItem(item);
-    }
+    },
     
-    _addTextAlignmentSubMenuItem(menu) {
+    _addTextAlignmentSubMenuItem: function(menu) {
         let item = new PopupMenu.PopupSubMenuMenuItem(DisplayStrings.TextAlignment[this.area.currentTextAlignment], true);
-        const TextAlignmentIcon = { 0: this._extension.FILES.ICONS.LEFT_ALIGNED, 1: this._extension.FILES.ICONS.CENTERED, 2: this._extension.FILES.ICONS.RIGHT_ALIGNED };
         item.icon.set_gicon(TextAlignmentIcon[this.area.currentTextAlignment]);
         
         item.menu.itemActivated = item.menu.close;
@@ -568,21 +571,19 @@ export const DrawingMenu = GObject.registerClass({
                     item.icon.set_gicon(TextAlignmentIcon[key]);
                 });
                 
-                this._getActor(subItem).connect('key-focus-in', updateSubMenuAdjustment);
+                getActor(subItem).connect('key-focus-in', updateSubMenuAdjustment);
             });
             return GLib.SOURCE_REMOVE;
         });
         
         menu.addMenuItem(item);
-    }
+    },
     
-    _addImageSubMenuItem(menu, images) {
+    _addImageSubMenuItem: function(menu, images) {
         let item = new PopupMenu.PopupSubMenuMenuItem('', true);
         item.update = () => {
-            if (this.area.currentImage) { // null value. what consequences ?
-                item.label.set_text(this.area.currentImage.toString());
-                item.icon.set_gicon(this.area.currentImage.gicon);
-            }
+            item.label.set_text(this.area.currentImage.toString());
+            item.icon.set_gicon(this.area.currentImage.gicon);
         };
         item.update();
         
@@ -592,18 +593,18 @@ export const DrawingMenu = GObject.registerClass({
         item.menu.openOld = item.menu.open;
         item.menu.open = (animate) => {
             if (!item.menu.isOpen && item.menu.isEmpty()) {
-                this._extension.FILES.IMAGES.getSorted().forEach(image => {
+                Files.Images.getSorted().forEach(image => {
                     let subItem = item.menu.addAction(image.toString(), () => {
                         this.area.currentImage = image;
                         item.update();
-                    }, this._extension.FILES.ICONS.FAKE);
+                    }, Files.Icons.FAKE);
                     
                     GLib.idle_add(GLib.PRIORITY_DEFAULT_IDLE, () => {
                         if (subItem.setIcon && image.thumbnailGicon)
                             subItem.setIcon(image.thumbnailGicon);
                     });
                     
-                    this._getActor(subItem).connect('key-focus-in', updateSubMenuAdjustment);
+                    getActor(subItem).connect('key-focus-in', updateSubMenuAdjustment);
                 });
             }
             item.menu.openOld();
@@ -611,30 +612,30 @@ export const DrawingMenu = GObject.registerClass({
         
         menu.addMenuItem(item);
         return item;
-    }
+    },
     
-    _addDrawingNameItem(menu) {
+    _addDrawingNameItem: function(menu) {
         this.drawingNameMenuItem = new PopupMenu.PopupMenuItem('', { reactive: false, activate: false });
         this.drawingNameMenuItem.setSensitive(false);
-        this._getActor(this.drawingNameMenuItem).add_style_class_name('draw-on-your-screen-menu-ellipsized');
+        getActor(this.drawingNameMenuItem).add_style_class_name('draw-on-your-screen-menu-ellipsized');
         menu.addMenuItem(this.drawingNameMenuItem);
         this._updateDrawingNameMenuItem();
-    }
+    },
     
-    _updateDrawingNameMenuItem() {
-        this._getActor(this.drawingNameMenuItem).visible = this.area.currentJson ? true : false;
+    _updateDrawingNameMenuItem: function() {
+        getActor(this.drawingNameMenuItem).visible = this.area.currentJson ? true : false;
         if (this.area.currentJson) {
             let prefix = this.area.drawingContentsHasChanged ? "* " : "";
             this.drawingNameMenuItem.label.set_text(`<i>${prefix}${this.area.currentJson.name}</i>`);
             this.drawingNameMenuItem.label.get_clutter_text().set_use_markup(true);
         }
-    }
+    },
     
-    _addOpenDrawingSubMenuItem(menu, label, icon) {
+    _addOpenDrawingSubMenuItem: function(menu, label, icon) {
         let item = new PopupMenu.PopupSubMenuMenuItem(label, true);
         this.openDrawingSubMenuItem = item;
         this.openDrawingSubMenu = item.menu;
-        item.setSensitive(Boolean(this._extension.FILES.JSONS.getSorted().length));
+        item.setSensitive(Boolean(Files.Jsons.getSorted().length));
         item.icon.set_icon_name(icon);
         
         item.menu.itemActivated = item.menu.close;
@@ -648,11 +649,11 @@ export const DrawingMenu = GObject.registerClass({
         };
         
         menu.addMenuItem(item);
-    }
+    },
     
-    _populateOpenDrawingSubMenu() {
+    _populateOpenDrawingSubMenu: function() {
         this.openDrawingSubMenu.removeAll();
-        this._extension.FILES.JSONS.getSorted().forEach(json => {
+        Files.Jsons.getSorted().forEach(json => {
             if (!json.gicon)
                 json.addSvgContents(...this.area.getSvgContentsForJson(json));
             
@@ -660,7 +661,7 @@ export const DrawingMenu = GObject.registerClass({
                 this.area.loadJson(json);
                 this._updateDrawingNameMenuItem();
                 this._updateActionSensitivity();
-            }, this._extension.FILES.ICONS.FAKE);
+            }, Files.Icons.FAKE);
             
             GLib.idle_add(GLib.PRIORITY_DEFAULT_IDLE, () => {
                 if (subItem.setIcon)
@@ -668,13 +669,13 @@ export const DrawingMenu = GObject.registerClass({
             });
             
             subItem.label.get_clutter_text().set_use_markup(true);
-            this._getActor(subItem).connect('key-focus-in', updateSubMenuAdjustment);
+            getActor(subItem).connect('key-focus-in', updateSubMenuAdjustment);
             
             let expander = new St.Bin({
                 style_class: 'popup-menu-item-expander',
                 x_expand: true,
             });
-            this._getActor(subItem).add_child(expander);
+            getActor(subItem).add_child(expander);
             
             let insertCallback = () => {
                 this.area.currentImage = json.image;
@@ -684,7 +685,7 @@ export const DrawingMenu = GObject.registerClass({
                 this._updateSectionVisibility();
             };
             let insertButton = new ActionButton(_("Add to images"), 'insert-image-symbolic', insertCallback, null, true);
-            this._getActor(subItem).add_child(insertButton);
+            getActor(subItem).add_child(insertButton);
             
             let deleteCallback = () => {
                 json.delete();
@@ -693,13 +694,13 @@ export const DrawingMenu = GObject.registerClass({
             };
             let deleteButton = new ActionButton(_("Delete"), 'edit-delete-symbolic', deleteCallback, null, true);
             deleteButton.child.add_style_class_name('draw-on-your-screen-menu-destructive-button');
-            this._getActor(subItem).add_child(deleteButton);
+            getActor(subItem).add_child(deleteButton);
         });
         
         this.openDrawingSubMenuItem.setSensitive(!this.openDrawingSubMenu.isEmpty());
-    }
+    },
     
-    _addSaveDrawingSubMenuItem(menu, label, icon) {
+    _addSaveDrawingSubMenuItem: function(menu, label, icon) {
         let item = new PopupMenu.PopupSubMenuMenuItem(label, true);
         this.saveDrawingSubMenuItem = item;
         this.saveDrawingSubMenu = item.menu;
@@ -714,18 +715,18 @@ export const DrawingMenu = GObject.registerClass({
             item.menu.openOld();
         };
         menu.addMenuItem(item);
-    }
+    },
     
-    _updateSaveDrawingSubMenuItemSensitivity() {
+    _updateSaveDrawingSubMenuItemSensitivity: function() {
         this.saveDrawingSubMenuItem.setSensitive(this.area.elements.length > 0);
-    }
+    },
     
     _onDrawingSaved() {
         this._updateDrawingNameMenuItem();
         this.openDrawingSubMenuItem.setSensitive(true);
-    }
+    },
     
-    _populateSaveDrawingSubMenu() {
+    _populateSaveDrawingSubMenu: function() {
         this.saveDrawingSubMenu.removeAll();
         let saveEntry = new Entry({ initialTextGetter: () => this.area.currentJson ? this.area.currentJson.name : "",
                                     hint_text: _("Type a name"),
@@ -733,32 +734,21 @@ export const DrawingMenu = GObject.registerClass({
                                         this.area.saveAsJsonWithName(text, this._onDrawingSaved.bind(this));
                                         this.saveDrawingSubMenu.toggle();
                                     },
-                                    invalidStrings: [this._extension.metadata['persistent-file-name'], '/'],
+                                    invalidStrings: [Me.metadata['persistent-file-name'], '/'],
                                     primaryIconName: 'insert-text' });
         this.saveDrawingSubMenu.addMenuItem(saveEntry.item);
-    }
+    },
     
-    _addSeparator(menu, thin) {
+    _addSeparator: function(menu, thin) {
         if (this.hasSeparators) {
             let separatorItem = new PopupMenu.PopupSeparatorMenuItem(' ');
-            this._getActor(separatorItem).add_style_class_name('draw-on-your-screen-menu-separator-item');
+            getActor(separatorItem).add_style_class_name('draw-on-your-screen-menu-separator-item');
             if (thin)
-                this._getActor(separatorItem).add_style_class_name('draw-on-your-screen-menu-thin-separator-item');
+                getActor(separatorItem).add_style_class_name('draw-on-your-screen-menu-thin-separator-item');
             menu.addMenuItem(separatorItem);
         }
     }
-
-    _getSummary(settingKey) {
-        return this._extension.internalShortcutSettings.settings_schema.get_key(settingKey).get_summary();
-    };
-
-    _getActor(object) {
-        return GS_VERSION < '3.33.0' ? object.actor : object;
-    };
 });
-
-
-
 
 // based on ApplicationsButton.scrollToButton , https://gitlab.gnome.org/GNOME/gnome-shell-extensions/blob/master/extensions/apps-menu/extension.js
 const updateSubMenuAdjustment = function(itemActor) {
@@ -777,20 +767,18 @@ const updateSubMenuAdjustment = function(itemActor) {
         adjustment.set_value(newScrollValue);
 };
 
-
-
-
 // An action button that uses upstream dash item tooltips.
-const ActionButton = GObject.registerClass ({
-    GTypeName: `${UUID}-DrawingMenuActionButton`,
+const ActionButton = new Lang.Class({
+    Name: `${UUID}-DrawingMenuActionButton`,
+    Extends: St.Bin,
     _labelShowing: false,
     _resetHoverTimeoutId: 0,
     _showLabelTimeoutId: 0,
     showLabel: Dash.DashItemContainer.prototype.showLabel,
     hideLabel: Dash.DashItemContainer.prototype.hideLabel,
     _syncLabel: Dash.Dash.prototype._syncLabel,
-}, class ActionButton extends St.Bin {
-    _init(name, icon, callback, callbackAfter, inline) {
+    
+    _init: function(name, icon, callback, callbackAfter, inline) {
         this._labelText = name;
         
         let button = new St.Button({ track_hover: true,
@@ -808,15 +796,15 @@ const ActionButton = GObject.registerClass ({
                 callbackAfter();
         });
         button.bind_property('reactive', button, 'can_focus', GObject.BindingFlags.DEFAULT);
-        //button.connect('notify::hover', () => this._syncLabel(this));
+        button.connect('notify::hover', () => this._syncLabel(this));
         
-        super._init({ child: button, x_expand: inline ? false : true });
-    }
+        this.parent({ child: button, x_expand: inline ? false : true });
+    },
     
     get label() {
         if (!this._label) {
             this._label = new St.Label({ style_class: 'dash-label' });
-            Main.layoutManager.uiGroup.add_child(this._label);
+            Main.layoutManager.uiGroup.add_actor(this._label);
             this.connect('destroy', () => this._label.destroy());
         }
         
@@ -825,11 +813,10 @@ const ActionButton = GObject.registerClass ({
 });
 
 // based on searchItem.js, https://github.com/leonardo-bartoli/gnome-shell-extension-Recents
-// zhrexl: Registered as if it needed to extend Object but I might change that in the future
-const Entry = GObject.registerClass({
-    GTypeName: `${UUID}-DrawingMenuEntry`,
-}, class Entry extends GObject.Object{
-    _init(params) {
+const Entry = new Lang.Class({
+    Name: `${UUID}-DrawingMenuEntry`,
+    
+    _init: function(params) {
         this.params = params;
         this.item = new PopupMenu.PopupBaseMenuItem({ style_class: 'draw-on-your-screen-menu-entry-item',
                                                       activate: false,
@@ -859,30 +846,30 @@ const Entry = GObject.registerClass({
         });
         this.entry.connect('secondary-icon-clicked', this._reset.bind(this));
         
-        this._getActor(this.item).add_child(this.entry);
-        this._getActor(this.item).connect('notify::mapped', (actor) => {
+        getActor(this.item).add_child(this.entry);
+        getActor(this.item).connect('notify::mapped', (actor) => {
             if (actor.mapped) {
                 this.entry.set_text(this.params.initialTextGetter());
                 this.entry.clutter_text.grab_key_focus();
             }
         });
-    }
+    },
     
-    _setError(hasError) {
+    _setError: function(hasError) {
         if (hasError)
             this.entry.add_style_class_name('draw-on-your-screen-menu-entry-error');
         else
             this.entry.remove_style_class_name('draw-on-your-screen-menu-entry-error');
-    }
+    },
     
-    _reset() {
+    _reset: function() {
         this.entry.text = '';
         this.entry.clutter_text.set_cursor_visible(true);
         this.entry.clutter_text.set_selection(0, 0);
         this._setError(false);
-    }
+    },
     
-    _onTextActivated(clutterText) {
+    _onTextActivated: function(clutterText) {
         let text = clutterText.get_text();
         if (text.length == 0)
             return;
@@ -890,23 +877,24 @@ const Entry = GObject.registerClass({
             return;
         this._reset();
         this.params.entryActivateCallback(text);
-    }
+    },
     
-    _onTextChanged(clutterText) {
+    _onTextChanged: function(clutterText) {
         let text = clutterText.get_text();
         this.entry.set_secondary_icon(text.length ? this.clearIcon : null);
         
         if (text.length)
             this._setError(this._getIsInvalid());
-    }
+    },
     
-    _getIsInvalid() {
-        return this.params.invalidStrings.some(invalidString => this.entry.text.indexOf(invalidString) != -1);
+    _getIsInvalid: function() {
+        for (let i = 0; i < this.params.invalidStrings.length; i++) {
+            if (this.entry.text.indexOf(this.params.invalidStrings[i]) != -1)
+                return true;
+        }
+        
+        return false;
     }
-
-    _getActor(object) {
-        return GS_VERSION < '3.33.0' ? object.actor : object;
-    };
 });
 
 

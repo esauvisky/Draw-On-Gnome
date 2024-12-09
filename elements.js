@@ -21,32 +21,20 @@
 /* jslint esversion: 6 */
 /* exported Shape, TextAlignment, Transformation, getAllFontFamilies, DrawingElement */
 
-import Cairo from 'cairo';
+const Cairo = imports.cairo;
+const Clutter = imports.gi.Clutter;
+const Lang = imports.lang;
+const Pango = imports.gi.Pango;
+const PangoCairo = imports.gi.PangoCairo;
 
-import Clutter from 'gi://Clutter';
-import Cogl from 'gi://Cogl';
-import GObject from 'gi://GObject';
-import Pango from 'gi://Pango';
-import PangoCairo from 'gi://PangoCairo';
+const Me = imports.misc.extensionUtils.getCurrentExtension();
+const UUID = Me.uuid.replace(/@/gi, '_at_').replace(/[^a-z0-9+_-]/gi, '_');
 
-import { CURATED_UUID as UUID } from './utils.js';
+var Shape = { NONE: 0, LINE: 1, ELLIPSE: 2, RECTANGLE: 3, TEXT: 4, POLYGON: 5, POLYLINE: 6, IMAGE: 7 };
+var TextAlignment = { LEFT: 0, CENTER: 1, RIGHT: 2 };
+var Transformation = { TRANSLATION: 0, ROTATION: 1, SCALE_PRESERVE: 2, STRETCH: 3, REFLECTION: 4, INVERSION: 5, SMOOTH: 100 };
 
-const Color = Clutter.Color ?? Cogl.Color;
-
-export const StaticColor = {
-    WHITE: Color.from_string('#ffffff')[1],
-    BLUE: Color.from_string('#0000ff')[1],
-    TRANSPARENT: Color.from_string('#00000000')[1],
-    BLACK: Color.from_string('#000000')[1],
-    GRAY: Color.from_string('#a0a0a4')[1],
-    RED: Color.from_string('#ff0000')[1]
-}
-
-export const Shape = { NONE: 0, LINE: 1, ELLIPSE: 2, RECTANGLE: 3, TEXT: 4, POLYGON: 5, POLYLINE: 6, IMAGE: 7, ARROW: 8 };
-export const TextAlignment = { LEFT: 0, CENTER: 1, RIGHT: 2 };
-export const Transformation = { TRANSLATION: 0, ROTATION: 1, SCALE_PRESERVE: 2, STRETCH: 3, REFLECTION: 4, INVERSION: 5, SMOOTH: 100 };
-
-export const getAllFontFamilies = function() {
+var getAllFontFamilies = function() {
     return PangoCairo.font_map_get_default().list_families().map(fontFamily => fontFamily.get_name()).sort((a,b) => a.localeCompare(b));
 };
 
@@ -76,9 +64,9 @@ const MIN_TRANSLATION_DISTANCE = 1;         // px
 const MIN_ROTATION_ANGLE = Math.PI / 1000;  // rad
 const MIN_DRAWING_SIZE = 3;                 // px
 const MIN_INTERMEDIATE_POINT_DISTANCE = 1;  // px, the higher it is, the fewer points there will be
-const MARK_COLOR = StaticColor.BLUE
+const MARK_COLOR = Clutter.Color.get_static(Clutter.StaticColor.BLUE);
 
-export const DrawingElement = function(params) {
+var DrawingElement = function(params) {
     return params.shape == Shape.TEXT ? new TextElement(params) :
            params.shape == Shape.IMAGE ? new ImageElement(params) :
            new _DrawingElement(params);
@@ -87,10 +75,10 @@ export const DrawingElement = function(params) {
 // DrawingElement represents a "brushstroke".
 // It can be converted into a cairo path as well as a svg element.
 // See DrawingArea._startDrawing() to know its params.
-const _DrawingElement = GObject.registerClass({
-    GTypeName: `${UUID}-DrawingElement`,
-}, class _DrawingElement extends GObject.Object{ 
-    _init(params) {
+const _DrawingElement = new Lang.Class({
+    Name: `${UUID}-DrawingElement`,
+    
+    _init: function(params) {
         for (let key in params)
             this[key] = params[key];
         
@@ -114,7 +102,7 @@ const _DrawingElement = GObject.registerClass({
             });
         }
         
-        if (params.transform?.center) {
+        if (params.transform && params.transform.center) {
             let angle = (params.transform.angle || 0) + (params.transform.startAngle || 0);
             if (angle)
                 this.transformations.push({ type: Transformation.ROTATION, angle: angle });
@@ -130,10 +118,10 @@ const _DrawingElement = GObject.registerClass({
         if (this.textRightAligned)
             this.textAlignment = TextAlignment.RIGHT;
         delete this.textRightAligned;
-    }
+    },
     
     // toJSON is called by JSON.stringify
-    toJSON() {
+    toJSON: function() {
         return {
             shape: this.shape,
             color: this.color,
@@ -146,12 +134,12 @@ const _DrawingElement = GObject.registerClass({
                                                  .map(transformation => Object.assign({}, transformation, { undoable: undefined })),
             points: this.points.map((point) => [Math.round(point[0]*100)/100, Math.round(point[1]*100)/100])
         };
-    }
+    },
     
-    buildCairo(cr, params) {
+    buildCairo: function(cr, params) {
         if (this.color)
-            cr.setSourceColor(this.color);
-
+            Clutter.cairo_set_source_color(cr, this.color);
+        
         if (this.line) {
             cr.setLineCap(this.line.lineCap);
             cr.setLineJoin(this.line.lineJoin);
@@ -161,7 +149,7 @@ const _DrawingElement = GObject.registerClass({
         if (this.fillRule)
             cr.setFillRule(this.fillRule);
         
-        if (this.dash?.active && this.dash.array && this.dash.array[0] && this.dash.array[1])
+        if (this.dash && this.dash.active && this.dash.array && this.dash.array[0] && this.dash.array[1])
             cr.setDash(this.dash.array, this.dash.offset);
         
         if (this.eraser)
@@ -173,7 +161,7 @@ const _DrawingElement = GObject.registerClass({
             setDummyStroke(cr);
         
         if (SVG_DEBUG_SUPERPOSES_CAIRO) {
-            cr.setSourceColor(StaticColor.RED);
+            Clutter.cairo_set_source_color(cr, Clutter.Color.new(255, 0, 0, 255));
             cr.setLineWidth(this.line.lineWidth / 2 || 1);
         }
         
@@ -204,12 +192,12 @@ const _DrawingElement = GObject.registerClass({
         this._drawCairo(cr, params);
         
         cr.identityMatrix();
-    }
+    },
     
-    _addMarks(cr) {
+    _addMarks: function(cr) {
         if (this.showSymmetryElement) {
             setDummyStroke(cr);
-            cr.setSourceColor(MARK_COLOR);
+            Clutter.cairo_set_source_color(cr, MARK_COLOR);
             
             let transformation = this.lastTransformation;
             if (transformation.type == Transformation.REFLECTION) {
@@ -223,8 +211,8 @@ const _DrawingElement = GObject.registerClass({
         
         if (this.showRotationCenter) {
             setDummyStroke(cr);
-            cr.setSourceColor(MARK_COLOR);
-
+            Clutter.cairo_set_source_color(cr, MARK_COLOR);
+            
             let center = this._getTransformedCenter(this.lastTransformation);
             cr.arc(center[0], center[1], INVERSION_CIRCLE_RADIUS, 0, 2 * Math.PI);
             cr.stroke();
@@ -232,8 +220,8 @@ const _DrawingElement = GObject.registerClass({
         
         if (this.showStretchAxes) {
             setDummyStroke(cr);
-            cr.setSourceColor(MARK_COLOR);
-
+            Clutter.cairo_set_source_color(cr, MARK_COLOR);
+            
             let center = this._getTransformedCenter(this.lastTransformation);
             for (let i = 0; i <=1; i++) {
                 cr.moveTo(center[0] - 1000 * Math.cos(i * Math.PI / 2), center[1] - 1000 * Math.sin(i * Math.PI / 2));
@@ -241,9 +229,9 @@ const _DrawingElement = GObject.registerClass({
             }
             cr.stroke();
         }
-    }
+    },
     
-    _drawCairo(cr, params) {
+    _drawCairo: function(cr, params) {
         let [points, shape] = [this.points, this.shape];
         
         if (shape == Shape.LINE && points.length == 3) {
@@ -286,26 +274,11 @@ const _DrawingElement = GObject.registerClass({
             }
             if (shape == Shape.POLYGON)
                 cr.closePath();
-        
-        } else if (shape == Shape.ARROW && points.length >= 2) {
-            // Draw the main line
-            cr.moveTo(points[0][0], points[0][1]);
-            cr.lineTo(points[1][0], points[1][1]);
-
-            // Draw arrowhead
-            let angle = Math.atan2(points[1][1] - points[0][1], points[1][0] - points[0][0]);
-            let arrowSize = this.line.lineWidth * 5; // Adjust this multiplier to change arrow size
-
-            cr.moveTo(points[1][0], points[1][1]);
-            cr.lineTo(points[1][0] - arrowSize * Math.cos(angle - Math.PI/6),
-                    points[1][1] - arrowSize * Math.sin(angle - Math.PI/6));
-            cr.moveTo(points[1][0], points[1][1]);
-            cr.lineTo(points[1][0] - arrowSize * Math.cos(angle + Math.PI/6),
-                    points[1][1] - arrowSize * Math.sin(angle + Math.PI/6));    
+            
         }
-    }
+    },
     
-    getContainsPoint(cr, x, y) {
+    getContainsPoint: function(cr, x, y) {
         cr.save();
         cr.setLineWidth(Math.max(this.line.lineWidth, 25));
         cr.setDash([], 0);
@@ -314,9 +287,9 @@ const _DrawingElement = GObject.registerClass({
         let inElement = cr.inStroke(x, y) || this.fill && cr.inFill(x, y);
         cr.restore();
         return inElement;
-    }
+    },
     
-    buildSVG(bgcolorString) {
+    buildSVG: function(bgcolorString) {
         let transforms = [];
         this.transformations.slice(0).reverse().forEach(transformation => {
             let center = this._getTransformedCenter(transformation);
@@ -373,9 +346,9 @@ const _DrawingElement = GObject.registerClass({
         }
         
         return this._drawSvg(transAttribute, bgcolorString);
-    }
+    },
     
-    _drawSvg(transAttribute, bgcolorString) {
+    _drawSvg: function(transAttribute, bgcolorString) {
         let row = "\n  ";
         let points = this.points.map((point) => [Math.round(point[0]*100)/100, Math.round(point[1]*100)/100]);
         let color = this.eraser ? bgcolorString : this.color.toJSON();
@@ -445,34 +418,23 @@ const _DrawingElement = GObject.registerClass({
                 row += ` ${points[i][0]},${points[i][1]}`;
             row += `"${transAttribute}/>`;
         
-        } else if (this.shape == Shape.ARROW && points.length >= 2) {
-            let angle = Math.atan2(points[1][1] - points[0][1], points[1][0] - points[0][0]);
-            let arrowSize = this.line.lineWidth * 5; // Should match the Cairo version
-
-            row += `<path ${attributes} d="M${points[0][0]},${points[0][1]} `;
-            row += `L${points[1][0]},${points[1][1]} `;
-            row += `M${points[1][0]},${points[1][1]} `;
-            row += `L${points[1][0] - arrowSize * Math.cos(angle - Math.PI/6)},${points[1][1] - arrowSize * Math.sin(angle - Math.PI/6)} `;
-            row += `M${points[1][0]},${points[1][1]} `;
-            row += `L${points[1][0] - arrowSize * Math.cos(angle + Math.PI/6)},${points[1][1] - arrowSize * Math.sin(angle + Math.PI/6)}"`;
-            row += `${transAttribute}/>`;
         }
         
         return row;
-    }
+    },
     
     get lastTransformation() {
         if (!this.transformations.length)
             return null;
         
         return this.transformations[this.transformations.length - 1];
-    }
+    },
     
     get isStraightLine() {
         return this.shape == Shape.LINE && this.points.length == 2;
-    }
+    },
     
-    smoothAll() {
+    smoothAll: function() {
         let oldPoints = this.points.slice();
         
         for (let i = 0; i < this.points.length; i++)
@@ -486,9 +448,9 @@ const _DrawingElement = GObject.registerClass({
         
         if (this._undoneTransformations)
             this._undoneTransformations = this._undoneTransformations.filter(transformation => transformation.type != Transformation.SMOOTH);
-    }
+    },
     
-    addPoint() {
+    addPoint: function() {
         if (this.shape == Shape.POLYGON || this.shape == Shape.POLYLINE) {
             // copy last point
             let [lastPoint, secondToLastPoint] = [this.points[this.points.length - 1], this.points[this.points.length - 2]];
@@ -502,10 +464,10 @@ const _DrawingElement = GObject.registerClass({
                 this.points[2] = this.points[1];
             }
         }
-    }
+    },
     
     // For free drawing only.
-    addIntermediatePoint(x, y, transform) {
+    addIntermediatePoint: function(x, y, transform) {
         let points = this.points;
         if (getNearness(points[points.length - 1], [x, y], MIN_INTERMEDIATE_POINT_DISTANCE))
             return;
@@ -513,16 +475,16 @@ const _DrawingElement = GObject.registerClass({
         points.push([x, y]);
         if (transform)
             this._smooth(points.length - 1);
-    }
+    },
     
-    startDrawing(startX, startY) {
+    startDrawing: function(startX, startY) {
         this.points.push([startX, startY]);
         
         if (this.shape == Shape.POLYGON || this.shape == Shape.POLYLINE)
             this.points.push([startX, startY]);
-    }
+    },
     
-    updateDrawing(x, y, transform) {
+    updateDrawing: function(x, y, transform) {
         let points = this.points;
         if (x == points[points.length - 1][0] && y == points[points.length - 1][1])
             return;
@@ -558,9 +520,9 @@ const _DrawingElement = GObject.registerClass({
             points[1] = [x, y];
             
         }
-    }
+    },
     
-    stopDrawing() {
+    stopDrawing: function() {
         // skip when the size is too small to be visible (3px) (except for free drawing)
         if (this.shape != Shape.NONE && this.points.length >= 2) {
             let lastPoint = this.points[this.points.length - 1];
@@ -572,9 +534,9 @@ const _DrawingElement = GObject.registerClass({
         if (this.transformations[0] && this.transformations[0].type == Transformation.ROTATION &&
                 Math.abs(this.transformations[0].angle) < MIN_ROTATION_ANGLE)
             this.transformations.shift();
-    }
+    },
     
-    startTransformation(startX, startY, type, undoable) {
+    startTransformation: function(startX, startY, type, undoable) {
         if (type == Transformation.TRANSLATION)
             this.transformations.push({ startX, startY, type, undoable, slideX: 0, slideY: 0 });
         else if (type == Transformation.ROTATION)
@@ -595,9 +557,9 @@ const _DrawingElement = GObject.registerClass({
             this.showRotationCenter = true;
         else if (type == Transformation.STRETCH)
             this.showStretchAxes = true;
-    }
+    },
     
-    updateTransformation(x, y) {
+    updateTransformation: function(x, y) {
         let transformation = this.lastTransformation;
         
         if (transformation.type == Transformation.TRANSLATION) {
@@ -648,9 +610,9 @@ const _DrawingElement = GObject.registerClass({
             [transformation.slideX, transformation.slideY] = [x, y];
             transformation.angle = Math.PI + Math.atan(y / (x || 1));
         }
-    }
+    },
     
-    stopTransformation() {
+    stopTransformation: function() {
         this.showSymmetryElement = false;
         this.showRotationCenter = false;
         this.showStretchAxes = false;
@@ -672,9 +634,9 @@ const _DrawingElement = GObject.registerClass({
             delete transformation.endX;
             delete transformation.endY;
         }
-    }
+    },
     
-    undoTransformation() {
+    undoTransformation: function() {
         if (this.transformations && this.transformations.length) {
             // Do not undo initial transformations (transformations made during the drawing step).
             if (!this.lastTransformation.undoable)
@@ -693,9 +655,9 @@ const _DrawingElement = GObject.registerClass({
         }
         
         return false;
-    }
+    },
     
-    redoTransformation() {
+    redoTransformation: function() {
         if (this._undoneTransformations && this._undoneTransformations.length) {
             if (!this.transformations)
                 this.transformations = [];
@@ -710,18 +672,18 @@ const _DrawingElement = GObject.registerClass({
         }
         
         return false;
-    }
+    },
     
-    resetUndoneTransformations() {
+    resetUndoneTransformations: function() {
         delete this._undoneTransformations;
-    }
+    },
     
     get canUndo() {
         return this._undoneTransformations && this._undoneTransformations.length ? true : false;
-    }
+    },
     
     // The figure rotation center before transformations (original).
-    _getOriginalCenter() {
+    _getOriginalCenter: function() {
         if (!this._originalCenter) {
             let points = this.points;
             this._originalCenter = this.shape == Shape.ELLIPSE ? [points[0][0], points[0][1]] :
@@ -732,10 +694,10 @@ const _DrawingElement = GObject.registerClass({
         }
         
         return this._originalCenter;
-    }
+    },
     
     // The figure rotation center, whose position is affected by all transformations done before 'transformation'.
-    _getTransformedCenter(transformation) {
+    _getTransformedCenter: function(transformation) {
         if (!transformation.elementTransformedCenter) {
             let matrix = new Pango.Matrix({ xx: 1, xy: 0, yx: 0, yy: 1, x0: 0, y0: 0 });
             
@@ -762,20 +724,20 @@ const _DrawingElement = GObject.registerClass({
         }
         
         return transformation.elementTransformedCenter;
-    }
+    },
     
-    _smooth(i) {
+    _smooth: function(i) {
         if (i < 2)
             return;
         this.points[i-1] = [(this.points[i-2][0] + this.points[i][0]) / 2, (this.points[i-2][1] + this.points[i][1]) / 2];
     }
 });
 
-const TextElement = GObject.registerClass({
-    GTypeName: `${UUID}-TextElement`,
-}, class TextElement extends _DrawingElement{
+const TextElement = new Lang.Class({
+    Name: `${UUID}-TextElement`,
+    Extends: _DrawingElement,
     
-    toJSON() {
+    toJSON: function() {
         // The font size is useless because it is always computed from the points during cairo/svg building.
         this.font.unset_fields(Pango.FontMask.SIZE);
         
@@ -789,7 +751,7 @@ const TextElement = GObject.registerClass({
             font: this.font.to_string(),
             points: this.points.map((point) => [Math.round(point[0]*100)/100, Math.round(point[1]*100)/100])
         };
-    }
+    },
     
     get x() {
         // this.textWidth is computed during Cairo building.
@@ -798,26 +760,26 @@ const TextElement = GObject.registerClass({
                      0;
         
         return this.points[1][0] - offset;
-    }
+    },
     
     get y() {
         return Math.max(this.points[0][1], this.points[1][1]);
-    }
+    },
     
     get height() {
         return Math.abs(this.points[1][1] - this.points[0][1]);
-    }
+    },
     
     // this.lineWidths is computed during Cairo building.
-    _getLineX(index) {
+    _getLineX: function(index) {
         let offset = this.textAlignment == TextAlignment.RIGHT && this.lineWidths && this.lineWidths[index] ? this.lineWidths[index] :
                      this.textAlignment == TextAlignment.CENTER && this.lineWidths && this.lineWidths[index] ? this.lineWidths[index] / 2 :
                      0;
         
         return this.points[1][0] - offset;
-    }
+    },
     
-    _drawCairo(cr, params) {
+    _drawCairo: function(cr, params) {
         if (this.points.length != 2)
             return;
         
@@ -857,13 +819,13 @@ const TextElement = GObject.registerClass({
             // Only draw the rectangle to find the element, not to show it.
             cr.setLineWidth(0);
         }
-    }
+    },
     
-    getContainsPoint(cr, x, y) {
+    getContainsPoint: function(cr, x, y) {
         return cr.inFill(x, y);
-    }
+    },
     
-    _drawSvg(transAttribute, bgcolorString) {
+    _drawSvg: function(transAttribute, bgcolorString) {
         if (this.points.length != 2)
             return "";
         
@@ -907,9 +869,9 @@ const TextElement = GObject.registerClass({
         });
         
         return row;
-    }
+    },
     
-    updateDrawing(x, y, transform) {
+    updateDrawing: function(x, y, transform) {
         let points = this.points;
         if (x == points[points.length - 1][0] && y == points[points.length - 1][1])
             return;
@@ -928,9 +890,9 @@ const TextElement = GObject.registerClass({
             points[1] = [x, y];
             
         }
-    }
+    },
     
-    _getOriginalCenter() {
+    _getOriginalCenter: function() {
         if (!this._originalCenter) {
             let points = this.points;
             this._originalCenter = points.length == 2 ? [points[1][0], Math.max(points[0][1], points[1][1])] :
@@ -939,14 +901,14 @@ const TextElement = GObject.registerClass({
         }
         
         return this._originalCenter;
-    }
+    },
 });
 
-const ImageElement = GObject.registerClass({
-    GTypeName: `${UUID}-ImageElement`,
-},  class ImageElement extends _DrawingElement{
+const ImageElement = new Lang.Class({
+    Name: `${UUID}-ImageElement`,
+    Extends: _DrawingElement,
     
-    toJSON() {
+    toJSON: function() {
         return {
             shape: this.shape,
             color: this.color,
@@ -956,9 +918,9 @@ const ImageElement = GObject.registerClass({
             preserveAspectRatio: this.preserveAspectRatio,
             points: this.points.map((point) => [Math.round(point[0]*100)/100, Math.round(point[1]*100)/100])
         };
-    }
+    },
     
-    _drawCairo(cr, params) {
+    _drawCairo: function(cr, params) {
         if (this.points.length < 2)
             return;
         
@@ -983,13 +945,13 @@ const ImageElement = GObject.registerClass({
             // Only draw the rectangle to find the element, not to show it.
             cr.setLineWidth(0);
         }
-    }
+    },
     
-    getContainsPoint(cr, x, y) {
+    getContainsPoint: function(cr, x, y) {
         return cr.inFill(x, y);
-    }
+    },
     
-    _drawSvg(transAttribute) {
+    _drawSvg: function(transAttribute) {
         let points = this.points;
         let row = "\n  ";
         let attributes = '';
@@ -1004,9 +966,9 @@ const ImageElement = GObject.registerClass({
         }
         
         return row;
-    }
+    },
     
-    updateDrawing(x, y, transform) {
+    updateDrawing: function(x, y, transform) {
         let points = this.points;
         if (x == points[0][0] || y == points[0][1])
             return;

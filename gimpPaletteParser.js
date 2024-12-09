@@ -21,8 +21,7 @@
 /* jslint esversion: 6 */
 /* exported parseFile */
 
-
-const decoder = new TextDecoder('utf-8');
+const ByteArray = imports.byteArray;
 
 /*
  * [
@@ -84,13 +83,13 @@ function parse(contents) {
     return columns.map((column, index) => [columnNumber > 1 ? `${name} ${index + 1}` : name, column]);
 }
 
-export function parseFile(file) {
+function parseFile(file) {
     if (!file.query_exists(null))
         return [];
     
     let [, contents] = file.load_contents(null);
     if (contents instanceof Uint8Array)
-        contents = decoder.decode(contents);
+        contents = ByteArray.toString(contents);
     
     return parse(contents);
 }

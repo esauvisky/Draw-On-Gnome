@@ -1,137 +1,68 @@
-# Draw On Your Screen 3
+# Draw On Your Screen
 
-![DOYS3](https://daveprowse.github.io/DrawOnYourScreen3/images/doys-logo2.png)
+Start drawing with Super+Alt+D.
+Then save your beautiful work by taking a screenshot.
 
-Start drawing on your GNOME desktop with **`Super+Alt+D`**.
-
-Documentation is **[here](https://daveprowse.github.io/DrawOnYourScreen3/)**. For updates, click **[here](https://daveprowse.github.io/DrawOnYourScreen3/blog/)**.
-
-- Forked from: https://github.com/zhrexl/DrawOnYourScreen2
-- Original fork: https://codeberg.org/som/DrawOnYourScreen
-
-Thank you to all the contributors! 😎
+![](https://codeberg.org/som/DrawOnYourScreen/raw/branch/media/screenshot.jpg)
 
 ## Features
 
-- Draw over applications
-- Basic shapes (rectangle, circle, ellipse, line, curve, polygon, polyline, arrow, text, image, free)
-- Basic transformations (move, rotate, resize, stretch, mirror, inverse)
-- Blackboard and Grid
-- Keep drawings on desktop background with persistence
-- Multi-monitor support
-- Save your work with `Ctrl+S`!!
+* Basic shapes (rectangle, circle, ellipse, line, curve, polygon, polyline, text, image, free)
+* Basic transformations (move, rotate, resize, stretch, mirror, inverse)
+* Smooth stroke
+* Draw over applications
+* Keep drawings on desktop background with persistence (notes, children's art ...)
+* Multi-monitor support
+* Export to SVG
 
-## Installation Methods for GNOME v47 and v46
+## Install
 
-> Note: We are working on getting the extension approved by GNOME so that it will be listed on https://extensions.gnome.org (E.G.O.) 
-
-> Stay tuned! Click [here](https://daveprowse.github.io/DrawOnYourScreen3/blog/) for updates.
-
-### Option 1: Use the Automated Script
-
-Copy the following command to your Bash terminal and press `enter` to run it:
-
-```bash
-bash <(wget -qO- https://raw.githubusercontent.com/daveprowse/scripts/refs/heads/main/doys-install.sh)
-```
-
-> **IMPORTANT!!** Always check scripts before running them! If you are uncomfortable running the script, or cannot run the script, then install manually with [Option #2](#option-2-install-manually-from-the-release-or-repository-branch) below.
-
-The script will identify your version of GNOME (if it is between v42 and v47) and install the correct version of the extension automatically.
-
-When complete, logout and log back in 
-
-Then enable the extension:
-
-- In the CLI:
-
-  ```console
-  gnome-extensions enable draw-on-your-screen3@daveprowse.github.io
-  ```
-
-- In the GUI
-  - Open the GNOME Extensions App:
-
-      `gnome-extensions-app`
-
-  - Locate Draw On Your Screen 3 and enable it.
-
-   > Note: You can install the Gnome Extensions App with the package `gnome-shell-extensions-prefs` within your Linux distribution.
-
-Now go forth and use the tool by pressing `Super + Alt + D`.
-
-> Note: You can discover the keyboard shortcuts by pressing `Ctrl + F1`.
-
-It's back to the drawing board my friends!
-
-### Option 2: Install Manually from the Release or Repository Branch
-
-> Note: For GNOME versions other than 47 & 46, see [Other GNOME Versions](#other-gnome-versions) below.
-
-1. Download or clone
-   - Download option:
-  
-      ```console
-      wget https://github.com/daveprowse/DrawOnYourScreen3/releases/download/v15.0-GNOME-v47/GNOMEv47.tar.xz
-      ```
-
-      Then, decompress the tar file: `tar -xvf GNOMEv47.tar.xz`
-
-   - Clone option:
-  
-      ```console
-      git clone https://github.com/daveprowse/DrawOnYourScreen3
-      ```
-
+1. Download and decompress or clone the repository
 2. Place the directory (the one that contains `metadata.json`) in `~/.local/share/gnome-shell/extensions`
-3. Change the directory name to `draw-on-your-screen3@daveprowse.github.io`
-4. Restart your session: 
-
-   - (Wayland) - Log out and log back in
-   - (Xorg) - Type `alt + F2` and `r` to restart the gnome-shell
-
-5. Enable the extension with GNOME Extensions command or application
+3. **Change the directory name** to `draw-on-your-screen@som.codeberg.org`
+4. Xorg: type `alt + F2` and `r` to restart gnome-shell  
+   Wayland: restart or re-login
+5. Enable the extension with GNOME Extensions or GNOME Tweaks application
 6. `Super + Alt + D` to test
+7. [https://codeberg.org/som/DrawOnYourScreen/issues](https://codeberg.org/som/DrawOnYourScreen/issues) to say it doesn't work
 
-*Issues?* Let us know at [this link](https://github.com/daveprowse/DrawOnYourScreen3/issues).
+## Tips and tricks
 
-**ENJOY!**
+* Power is nothing without control:
 
----
+ The `Ctrl` key provides an extra functionality for each tool.
 
-### Other GNOME Versions
+ [Range of Ctrl key possibilities](https://codeberg.org/som/DrawOnYourScreen/src/branch/media/ctrl.webm)
 
-If you prefer not to use the script above, and have an older version of GNOME, choose from a download method below and then follow steps 2 through 6 above.
+* Draw arrows:
 
-#### GNOME v45
+ Intersect two lines and curve the second thanks to the `Ctrl` key.
 
-Download or clone this repository branch
-   - Download option: 
-  
-      ```console
-      wget https://github.com/daveprowse/DrawOnYourScreen3/releases/download/v14.0-GNOME-v45/GNOMEv45.tar.xz
-      ```
+ [How to draw an arrow](https://codeberg.org/som/DrawOnYourScreen/src/branch/media/arrow.webm)
 
-      Then, decompress the tar file: `tar -xvf GNOMEv45.tar.xz`
+* Duplicate an element:
 
-   - Clone option:
-  
-      ```console
-      git clone -b GNOMEv45 https://github.com/daveprowse/DrawOnYourScreen3
+ Hold the `Shift` key while starting moving.
+ 
+ [How to duplicate an element](https://codeberg.org/som/DrawOnYourScreen/src/branch/media/duplicate.webm)
 
-#### GNOME v42 - 44
+* Insertable images:
 
-Download or clone this repository branch
-   - Download option: 
-  
-      ```console
-      wget https://github.com/daveprowse/DrawOnYourScreen3/releases/download/v13.0-GNOME-v42-v44/GNOMEv42.tar.xz
-      ```
+ You can insert images (jpeg, png, svg) in your drawings. By default images are sought in `~/.local/share/draw-on-your-screen/images/` but the location is configurable in the preferences. Another way is to copy-past the images from Nautilus or any clipboard source by using the usual `Ctrl + V` shortcut inside the drawing mode.
+ 
+ [How to add images from Nautilus](https://codeberg.org/som/DrawOnYourScreen/src/branch/media/ctrl-plus-v.webm)
 
-      Then, decompress the tar file: `tar -xvf GNOMEv42.tar.xz`
+* Eraser and SVG:
 
-   - Clone option:
-  
-      ```console
-      git clone -b GNOMEv42 https://github.com/daveprowse/DrawOnYourScreen3
-      ```
+ There is no eraser in SVG so when you export elements made with the eraser to a SVG file, they are colored with the background color, transparent if it is disabled. See `“Add a drawing background”` or edit the SVG file afterwards.
+
+* Screenshot Tool extension:
+
+ [Screenshot Tool](https://extensions.gnome.org/extension/1112/screenshot-tool/) is a convenient extension to “create, copy, store and upload screenshots”. In order to select a screenshoot area with your pointer while keeping the drawing in place, you need first to tell DrawOnYourScreen to ungrab the pointer (`Ctrl + Super + Alt + D`).
+
+* Color Picker extension:
+
+ If the GNOME Shell built-in color picker is too basic for you, have a look at the [Color Picker extension](https://extensions.gnome.org/extension/3396/color-picker), which let's you select the pixel accurately, preview the color and adjust its values. Once installed and enabled, it will be transparently integrated into DrawOnYourScreen.
+
+ ![Color Picker extension in action](https://codeberg.org/som/DrawOnYourScreen/raw/branch/media/color-picker-extension.jpg)
+
