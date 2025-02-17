@@ -68,6 +68,30 @@ It's back to the drawing board my friends! Enjoy! 😎
 
 ---
 
+### Note about GNOME 48
+
+I am not supporting GNOME version 48 until final release. However you can run the extension on GNOME 48 if you do the following:
+
+1. Edit the following file:
+
+    ```
+    ~/.local/share/gnome-shell/extensions/draw-on-your-screen3@daveprowse.github.io/metadata.json
+    ```
+
+2. Add "48" as shown below.
+
+```json
+    "shell-version": [
+        "46",
+        "47",
+        "48"
+    ],
+```
+
+Functionality is not guaranteed, but it "appears" to work fine for now. This is updated in the "main" branch, but not in the releases yet.
+
+---
+
 ## Manual Installs
 
 📖 For manual installation procedures (git clone and tarball) see the **[Documentation](https://daveprowse.github.io/DrawOnYourScreen3/installation/)**.
