@@ -339,6 +339,21 @@
     </span>
   </a>
   
+    <nav class="md-nav" aria-label="Option 1: Use the Automated Script">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#note-about-gnome-48" class="md-nav__link">
+    <span class="md-ellipsis">
+      Note about GNOME 48
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
 </li>
       
         <li class="md-nav__item">
@@ -357,21 +372,6 @@
       GNOME v46 and v47
     </span>
   </a>
-  
-    <nav class="md-nav" aria-label="GNOME v46 and v47">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#note-about-gnome-48" class="md-nav__link">
-    <span class="md-ellipsis">
-      Note about GNOME 48
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
   
 </li>
         
@@ -701,6 +701,26 @@
 <li><img alt="🙋‍♂️" class="twemoji" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@15.1.0/assets/svg/1f64b-200d-2642-fe0f.svg" title=":man_raising_hand:" /> To view all of the shortcuts while working in the extension press <code>Ctrl + F1</code>.</li>
 </ol>
 <p><strong>Have fun!</strong></p>
+<h3 id="note-about-gnome-48">Note about GNOME 48</h3>
+<p>I am not supporting GNOME version 48 until final release. However you can run the extension on GNOME 48 if you do the following:</p>
+<ol>
+<li>
+<p>Edit the following file:</p>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a>~/.local/share/gnome-shell/extensions/draw-on-your-screen3@daveprowse.github.io/metadata.json
+</span></code></pre></div>
+</li>
+<li>
+<p>Add "48" as shown below.</p>
+</li>
+</ol>
+<div class="language-json highlight"><pre><span></span><code><span id="__span-3-1"><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a><span class="w">    </span><span class="nt">&quot;shell-version&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
+</span><span id="__span-3-2"><a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a><span class="w">        </span><span class="s2">&quot;46&quot;</span><span class="p">,</span>
+</span><span id="__span-3-3"><a id="__codelineno-3-3" name="__codelineno-3-3" href="#__codelineno-3-3"></a><span class="w">        </span><span class="s2">&quot;47&quot;</span><span class="p">,</span>
+</span><span id="__span-3-4"><a id="__codelineno-3-4" name="__codelineno-3-4" href="#__codelineno-3-4"></a><span class="w">        </span><span class="s2">&quot;48&quot;</span>
+</span><span id="__span-3-5"><a id="__codelineno-3-5" name="__codelineno-3-5" href="#__codelineno-3-5"></a><span class="w">    </span><span class="p">],</span>
+</span></code></pre></div>
+<p>Functionality is not guaranteed, but it "appears" to work fine for now. This is updated in the "main" branch, but not in the releases yet.</p>
+<hr />
 <h2 id="option-2-install-manually-from-the-release-or-repository-branch">Option 2: Install Manually from the Release or Repository Branch</h2>
 <p>For those of you who would rather install manually, I have <code>git clone</code> and tarball options below.</p>
 <h3 id="gnome-v46-and-v47">GNOME v46 and v47</h3>
@@ -708,13 +728,13 @@
 <li>
 <p>Download or clone the extension.</p>
 <p><strong>Download option:</strong></p>
-<div class="language-console highlight"><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="go">wget https://github.com/daveprowse/DrawOnYourScreen3/releases/download/v15.0-GNOME-v47/GNOMEv47.tar.xz</span>
+<div class="language-console highlight"><pre><span></span><code><span id="__span-4-1"><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a><span class="go">wget https://github.com/daveprowse/DrawOnYourScreen3/releases/download/v15.0-GNOME-v47/GNOMEv47.tar.xz</span>
 </span></code></pre></div>
 <p>Then, decompress the tar file:</p>
-<div class="language-console highlight"><pre><span></span><code><span id="__span-3-1"><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a><span class="go">tar -xvf GNOMEv47.tar.xz</span>
+<div class="language-console highlight"><pre><span></span><code><span id="__span-5-1"><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a><span class="go">tar -xvf GNOMEv47.tar.xz</span>
 </span></code></pre></div>
 <p><strong>Clone option:</strong></p>
-<div class="language-console highlight"><pre><span></span><code><span id="__span-4-1"><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a><span class="go">git clone https://github.com/daveprowse/DrawOnYourScreen3</span>
+<div class="language-console highlight"><pre><span></span><code><span id="__span-6-1"><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a><span class="go">git clone https://github.com/daveprowse/DrawOnYourScreen3</span>
 </span></code></pre></div>
 </li>
 <li>
@@ -735,26 +755,6 @@
 </ol>
 <p><em>Issues?</em> Let us know at <a href="https://github.com/daveprowse/DrawOnYourScreen3/issues">this link</a>.</p>
 <p><strong>ENJOY!</strong></p>
-<hr />
-<h4 id="note-about-gnome-48">Note about GNOME 48</h4>
-<p>I am not supporting GNOME version 48 until final release. However you can run the extension on GNOME 48 if you do the following:</p>
-<ol>
-<li>
-<p>Edit the following file:</p>
-<div class="language-text highlight"><pre><span></span><code><span id="__span-5-1"><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a>~/.local/share/gnome-shell/extensions/draw-on-your-screen3@daveprowse.github.io/metadata.json
-</span></code></pre></div>
-</li>
-<li>
-<p>Add "48" as shown below.</p>
-</li>
-</ol>
-<div class="language-json highlight"><pre><span></span><code><span id="__span-6-1"><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a><span class="w">    </span><span class="nt">&quot;shell-version&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
-</span><span id="__span-6-2"><a id="__codelineno-6-2" name="__codelineno-6-2" href="#__codelineno-6-2"></a><span class="w">        </span><span class="s2">&quot;46&quot;</span><span class="p">,</span>
-</span><span id="__span-6-3"><a id="__codelineno-6-3" name="__codelineno-6-3" href="#__codelineno-6-3"></a><span class="w">        </span><span class="s2">&quot;47&quot;</span><span class="p">,</span>
-</span><span id="__span-6-4"><a id="__codelineno-6-4" name="__codelineno-6-4" href="#__codelineno-6-4"></a><span class="w">        </span><span class="s2">&quot;48&quot;</span>
-</span><span id="__span-6-5"><a id="__codelineno-6-5" name="__codelineno-6-5" href="#__codelineno-6-5"></a><span class="w">    </span><span class="p">],</span>
-</span></code></pre></div>
-<p>Functionality is not guaranteed, but it "appears" to work fine for now.</p>
 <hr />
 <h3 id="gnome-v45">GNOME v45</h3>
 <p>Download or clone this repository branch</p>
