@@ -4,9 +4,6 @@ Annotate your GNOME desktop with **`Super+Alt+D`**.
 
 Documentation is **[here](https://daveprowse.github.io/Draw-On-GNOME/)**. For news, click **[here](https://daveprowse.github.io/Draw-On-GNOME/blog/)**.
 
-- Forked from: https://github.com/zhrexl/DrawOnYourScreen2
-- Original fork: https://codeberg.org/som/DrawOnYourScreen
-
 Thank you to all the contributors! 😎
 
 ## Features
@@ -30,7 +27,7 @@ Thank you to all the contributors! 😎
 1. Copy the following command to a *Bash* terminal and press `enter` to run it:
 
    ```bash
-   bash <(wget -qO- https://raw.githubusercontent.com/daveprowse/scripts/refs/heads/main/doys-install.sh)
+   bash <(wget -qO- https://raw.githubusercontent.com/daveprowse/scripts/refs/heads/main/dog-install.sh)
    ```
 
    The script will attempt to identify your version of GNOME and install the correct version of the extension automatically.
@@ -71,6 +68,9 @@ It's back to the drawing board my friends! Enjoy! 😎
 ## Manual Installs
 
 📖 For manual installation procedures (git clone and tarball) see the **[Documentation](https://daveprowse.github.io/Draw-On-GNOME/installation/)**.
+
+- Forked from: https://github.com/zhrexl/DrawOnYourScreen2
+- Original fork: https://codeberg.org/som/DrawOnYourScreen
 
 > Documentation is generated using Material for Mkdocs. Check it out:
 > [![Built with Material for MkDocs](https://img.shields.io/badge/Material_for_MkDocs-526CFE?style=for-the-badge&logo=MaterialForMkDocs&logoColor=white)](https://squidfunk.github.io/mkdocs-material/)
