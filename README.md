@@ -70,7 +70,7 @@ It's back to the drawing board my friends! Enjoy! 😎
 
 ## Manual Installs
 
-📖 For manual installation procedures (git clone and tarball) see the **[Documentation](https://daveprowse.github.io/draw-on-GNOME/installation/)**.
+📖 For manual installation procedures (git clone and tarball) see the **[Documentation](https://daveprowse.github.io/Draw-On-GNOME/installation/)**.
 
 > Documentation is generated using Material for Mkdocs. Check it out:
 > [![Built with Material for MkDocs](https://img.shields.io/badge/Material_for_MkDocs-526CFE?style=for-the-badge&logo=MaterialForMkDocs&logoColor=white)](https://squidfunk.github.io/mkdocs-material/)
