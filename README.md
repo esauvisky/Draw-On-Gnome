@@ -23,7 +23,7 @@ Thank you to all the contributors! 😎
 
 > Note: We are working on getting the extension approved by GNOME so that it will be listed on https://extensions.gnome.org (E.G.O.) 
 
-> Stay tuned! Click [here](https://daveprowse.github.io/Draw-On-GNOME/blog/) for DOYS updates.
+> Stay tuned! Click [here](https://daveprowse.github.io/Draw-On-GNOME/blog/) for updates.
 
 ---
 
