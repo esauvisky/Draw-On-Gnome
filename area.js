@@ -1,5 +1,6 @@
 /*
  * Copyright 2019 Abakkk
+ * Copyright 2024 Dave Prowse
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -16,9 +17,11 @@
  *
  * SPDX-FileCopyrightText: 2019 Abakkk
  * SPDX-License-Identifier: GPL-3.0-or-later
+ * SPDX-FileContributor: Modified by Dave Prowse
  */
 
-/* jslint esversion: 6 */
+/* jslint esversion: 6 (2019) */
+/* eslint version: 9.16 (2024) */
 /* exported Tool, DrawingArea */
 
 import Cairo from 'cairo';
@@ -119,7 +122,7 @@ export const DrawingArea = GObject.registerClass({
 }, class DrawingArea extends St.Widget {
 
     _init(extension, params, monitor, helper, areaManagerUtils, loadPersistent, toolConf) {
-        super._init({ style_class: 'draw-on-your-screen', name: params.name });
+        super._init({ style_class: 'draw-on-gnome', name: params.name });
         this._extension = extension;
         this.monitor = monitor;
         this.helper = helper;
@@ -1021,14 +1024,14 @@ export const DrawingArea = GObject.registerClass({
         let x, y, width, height, onComplete;
 
         if (this.isSquareArea) {
-            this.layerContainer.add_style_class_name('draw-on-your-screen-square-area');
+            this.layerContainer.add_style_class_name('draw-on-gnome-square-area');
             [x, y] = [(this.monitor.width - this.squareAreaSize) / 2, (this.monitor.height - this.squareAreaSize) / 2];
             width = height = this.squareAreaSize;
             onComplete = () => { };
         } else {
             x = y = 0;
             [width, height] = [this.monitor.width, this.monitor.height];
-            onComplete = () => this.layerContainer.remove_style_class_name('draw-on-your-screen-square-area');
+            onComplete = () => this.layerContainer.remove_style_class_name('draw-on-gnome-square-area');
         }
 
         if (this.layerContainer.ease) {

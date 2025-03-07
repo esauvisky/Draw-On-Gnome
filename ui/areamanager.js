@@ -1,5 +1,6 @@
 /*
  * Copyright 2019 Abakkk 
+ * Copyright 2024 Dave Prowse
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
@@ -15,9 +16,11 @@
  *
  * SPDX-FileCopyrightText: 2019 Abakkk
  * SPDX-License-Identifier: GPL-3.0-or-later
+ * SPDX-FileContributor: Modified by Dave Prowse
  */
 
-/* jslint esversion: 6 */
+/* jslint esversion: 6 (2019) */
+/* eslint version: 9.16 (2024) */
 /* exported init */
 
 import Meta from 'gi://Meta';
@@ -537,7 +540,7 @@ export class DrawingIndicator {
         let [menuAlignment, dontCreateMenu] = [0, true];
         this.button = new PanelMenu.Button(menuAlignment, "Drawing Indicator", dontCreateMenu);
         this.buttonActor = this._GS_VERSION < '3.33.0' ? this.button.actor: this.button;
-        Main.panel.addToStatusArea('draw-on-your-screen-indicator', this.button);
+        Main.panel.addToStatusArea('draw-on-gnome-indicator', this.button);
         
         this.icon = new St.Icon({ icon_name: 'applications-graphics-symbolic',
                                   style_class: 'system-status-icon screencast-indicator' });

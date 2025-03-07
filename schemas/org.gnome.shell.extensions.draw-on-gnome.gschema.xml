@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<schemalist gettext-domain="draw-on-your-screen">
-  <schema path="/org/gnome/shell/extensions/draw-on-your-screen/" id="org.gnome.shell.extensions.draw-on-your-screen">
-    <child name="drawing" schema="org.gnome.shell.extensions.draw-on-your-screen.drawing"/>
-    <child name="internal-shortcuts" schema="org.gnome.shell.extensions.draw-on-your-screen.internal-shortcuts"/>
+<schemalist gettext-domain="draw-on-gnome">
+  <schema path="/org/gnome/shell/extensions/draw-on-gnome/" id="org.gnome.shell.extensions.draw-on-gnome">
+    <child name="drawing" schema="org.gnome.shell.extensions.draw-on-gnome.drawing"/>
+    <child name="internal-shortcuts" schema="org.gnome.shell.extensions.draw-on-gnome.internal-shortcuts"/>
     <key type="b" name="drawing-on-desktop">
       <default>false</default>
       <summary>Drawing on the desktop</summary>
-      <description><![CDATA[<i>Draw On Your Screen</i> becomes <i>Draw On Your Desktop</i>]]></description>
+      <description><![CDATA[<i>Draw On Gnome</i> becomes <i>Draw On Gnome Desktop</i>]]></description>
     </key>
     <key type="as" name="erase-drawings">
       <default>["&lt;Alt&gt;&lt;Super&gt;e"]</default>
@@ -50,7 +50,7 @@
       <description></description>
     </key>
   </schema>
-  <schema path="/org/gnome/shell/extensions/draw-on-your-screen/drawing/" id="org.gnome.shell.extensions.draw-on-your-screen.drawing">
+  <schema path="/org/gnome/shell/extensions/draw-on-gnome/drawing/" id="org.gnome.shell.extensions.draw-on-gnome.drawing">
     <key type="s" name="background-color">
       <default>"#2e2e2e"</default>
       <summary>Background color</summary>
@@ -147,7 +147,7 @@
       <description>Size of tool brush</description>
     </key>
   </schema>
-  <schema path="/org/gnome/shell/extensions/draw-on-your-screen/internal-shortcuts/" id="org.gnome.shell.extensions.draw-on-your-screen.internal-shortcuts">
+  <schema path="/org/gnome/shell/extensions/draw-on-gnome/internal-shortcuts/" id="org.gnome.shell.extensions.draw-on-gnome.internal-shortcuts">
     <key type="as" name="decrement-line-width">
       <default><![CDATA[['<Primary>KP_Subtract','<Primary>minus','<Primary><Shift>minus']]]></default>
       <summary>Decrement line width</summary>

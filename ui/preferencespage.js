@@ -1,6 +1,6 @@
 /*
  * Copyright 2022 zhrexl
- *
+ * Copyright 2024 Dave Prowse
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
@@ -13,8 +13,13 @@
  *
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
- *
+ 
+ * SPDX-FileCopyrightText: 2024 Dave Prowse
+ * SPDX-License-Identifier: GPL-3.0-or-later
+ * SPDX-FileContributor: Modified by Dave Prowse
  */
+
+/* eslint version: 9.16 (2024) */
 
 
 import Adw from 'gi://Adw';

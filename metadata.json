@@ -1,17 +1,18 @@
 {
-    "uuid": "draw-on-your-screen3@daveprowse.github.io",
-    "name": "Draw On Your Screen 3",
+    "name": "Draw On GNOME",
+    "uuid": "draw-on-gnome@daveprowse.github.io",
     "description": "Annotation tool for the GNOME desktop",
-    "url": "https://github.com/daveprowse/DrawOnYourScreen3",
-    "settings-schema": "org.gnome.shell.extensions.draw-on-your-screen",
-    "gettext-domain": "draw-on-your-screen",
-    "data-dir": "draw-on-your-screen",
-    "persistent-file-name": "persistent",
-    "svg-file-name": "DrawOnYourScreen",
+    "gettext-domain": "draw-on-gnome",
+    "data-dir": "draw-on-gnome",
+    "persistent-file-name": "persistent",    
     "shell-version": [        
         "46",
         "47",
-        "48"       
-    ],
-    "version": 15.0
+        "48"
+    ],    
+    "url": "https://github.com/daveprowse/Draw-On-GNOME",
+    "settings-schema": "org.gnome.shell.extensions.draw-on-gnome",    
+    "version-name": "1.0",
+    "version": 1
+    
 }

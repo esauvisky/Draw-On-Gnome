@@ -1,5 +1,6 @@
 /*
  * Copyright 2022 zhrexl
+ * Copyright 2024 Dave Prowse
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -14,7 +15,12 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
+ * SPDX-FileCopyrightText: 2024 Dave Prowse
+ * SPDX-License-Identifier: GPL-3.0-or-later
+ * SPDX-FileContributor: Modified by Dave Prowse 
  */
+
+/* eslint version: 9.16 (2024) */
 
 import Adw from 'gi://Adw';
 import Gtk from 'gi://Gtk';
@@ -48,7 +54,7 @@ const AboutPage = GObject.registerClass({
         scrolledWindow.set_child(vbox);
 
         // Translators: you are free to translate the extension name, that is displayed in About page, or not
-        let name = "<b> " + _("Draw On You Screen 3") + "</b>";
+        let name = "<b> " + _("Draw On GNOME") + "</b>";
         // Translators: version number in "About" page
         let version = _("Version %f").format(extensionPreferences.metadata.version);
         // Translators: you are free to translate the extension description, that is displayed in About page, or not

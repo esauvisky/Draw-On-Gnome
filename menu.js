@@ -1,5 +1,6 @@
 /*
  * Copyright 2019 Abakkk
+ * Copyright 2024 Dave Prowse
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -16,9 +17,11 @@
  *
  * SPDX-FileCopyrightText: 2019 Abakkk
  * SPDX-License-Identifier: GPL-3.0-or-later
+ * SPDX-FileContributor: Modified by Dave Prowse
  */
 
-/* jslint esversion: 6 */
+/* jslint esversion: 6 (2019) */
+/* eslint version: 9.16 (2024) */
 
 import Clutter from 'gi://Clutter';
 import GLib from 'gi://GLib';
@@ -154,7 +157,7 @@ export const DrawingMenu = GObject.registerClass({
         
         Main.layoutManager.uiGroup.add_child(this.menu.actor);
         
-        this.menu.actor.add_style_class_name('background-menu draw-on-your-screen-menu');
+        this.menu.actor.add_style_class_name('background-menu draw-on-gnome-menu');
         this.menu.actor.hide();
         this.hasSeparators = monitor.height >= 750;
         
@@ -228,12 +231,12 @@ export const DrawingMenu = GObject.registerClass({
     _redisplay() {
         this.menu.removeAll();
         
-        let groupItem = new PopupMenu.PopupBaseMenuItem({ reactive: false, can_focus: false, style_class: 'draw-on-your-screen-menu-group-item' });
+        let groupItem = new PopupMenu.PopupBaseMenuItem({ reactive: false, can_focus: false, style_class: 'draw-on-gnome-menu-group-item' });
         this.undoButton = new ActionButton(this._getSummary('undo'), 'edit-undo-symbolic', this.area.undo.bind(this.area), this._updateActionSensitivity.bind(this));
         this.redoButton = new ActionButton(this._getSummary('redo'), 'edit-redo-symbolic', this.area.redo.bind(this.area), this._updateActionSensitivity.bind(this));
         this.eraseButton = new ActionButton(_("Erase"), 'edit-clear-all-symbolic', this.area.deleteLastElement.bind(this.area), this._updateActionSensitivity.bind(this));
         this.smoothButton = new ActionButton(_("Smooth"), this._extension.FILES.ICONS.SMOOTH, this.area.smoothLastElement.bind(this.area), this._updateActionSensitivity.bind(this));
-        this.eraseButton.child.add_style_class_name('draw-on-your-screen-menu-destructive-button');
+        this.eraseButton.child.add_style_class_name('draw-on-gnome-menu-destructive-button');
         this._getActor(groupItem).add_child(this.undoButton);
         this._getActor(groupItem).add_child(this.redoButton);
         this._getActor(groupItem).add_child(this.eraseButton);
@@ -289,7 +292,7 @@ export const DrawingMenu = GObject.registerClass({
         this._addSaveDrawingSubMenuItem(this.menu, _("Save drawing as…"), 'document-save-as-symbolic');
         this._addSeparator(this.menu);
         
-        groupItem = new PopupMenu.PopupBaseMenuItem({ reactive: false, can_focus: false, style_class: 'draw-on-your-screen-menu-group-item' });
+        groupItem = new PopupMenu.PopupBaseMenuItem({ reactive: false, can_focus: false, style_class: 'draw-on-gnome-menu-group-item' });
         this.saveButton = new ActionButton(this._getSummary('save-as-json'), 'document-save-symbolic', this.area.saveAsJson.bind(this.area, false, this._onDrawingSaved.bind(this)), null);
         this.svgButton = new ActionButton(this._getSummary('export-to-svg'), this._extension.FILES.ICONS.DOCUMENT_EXPORT, this.area.exportToSvg.bind(this.area), null);
         this.prefsButton = new ActionButton(this._getSummary('open-preferences'), 'document-page-setup-symbolic', this.areaManagerUtils.openPreferences, null);
@@ -357,7 +360,7 @@ export const DrawingMenu = GObject.registerClass({
     
     _addSliderItem(menu, target, targetProperty) {
         let item = new PopupMenu.PopupBaseMenuItem({ activate: false });
-        let label = new St.Label({ text: DisplayStrings.getPixels(target[targetProperty]), style_class: 'draw-on-your-screen-menu-slider-label' });
+        let label = new St.Label({ text: DisplayStrings.getPixels(target[targetProperty]), style_class: 'draw-on-gnome-menu-slider-label' });
         let slider = new Slider.Slider(target[targetProperty] / 50);
         
         if (GS_VERSION < '3.33.0') {
@@ -528,7 +531,7 @@ export const DrawingMenu = GObject.registerClass({
         item.icon.set_gicon(icon);
         
         item.menu.itemActivated = item.menu.close;
-        item.menu.actor.add_style_class_name('draw-on-your-screen-menu-ellipsized');
+        item.menu.actor.add_style_class_name('draw-on-gnome-menu-ellipsized');
         
         item.menu.openOld = item.menu.open;
         item.menu.open = (animate) => {
@@ -587,7 +590,7 @@ export const DrawingMenu = GObject.registerClass({
         item.update();
         
         item.menu.itemActivated = item.menu.close;
-        item.menu.actor.add_style_class_name('draw-on-your-screen-menu-ellipsized');
+        item.menu.actor.add_style_class_name('draw-on-gnome-menu-ellipsized');
         
         item.menu.openOld = item.menu.open;
         item.menu.open = (animate) => {
@@ -616,7 +619,7 @@ export const DrawingMenu = GObject.registerClass({
     _addDrawingNameItem(menu) {
         this.drawingNameMenuItem = new PopupMenu.PopupMenuItem('', { reactive: false, activate: false });
         this.drawingNameMenuItem.setSensitive(false);
-        this._getActor(this.drawingNameMenuItem).add_style_class_name('draw-on-your-screen-menu-ellipsized');
+        this._getActor(this.drawingNameMenuItem).add_style_class_name('draw-on-gnome-menu-ellipsized');
         menu.addMenuItem(this.drawingNameMenuItem);
         this._updateDrawingNameMenuItem();
     }
@@ -638,7 +641,7 @@ export const DrawingMenu = GObject.registerClass({
         item.icon.set_icon_name(icon);
         
         item.menu.itemActivated = item.menu.close;
-        item.menu.actor.add_style_class_name('draw-on-your-screen-menu-ellipsized');
+        item.menu.actor.add_style_class_name('draw-on-gnome-menu-ellipsized');
         
         item.menu.openOld = item.menu.open;
         item.menu.open = (animate) => {
@@ -692,7 +695,7 @@ export const DrawingMenu = GObject.registerClass({
                 this.openDrawingSubMenuItem.setSensitive(!this.openDrawingSubMenu.isEmpty());
             };
             let deleteButton = new ActionButton(_("Delete"), 'edit-delete-symbolic', deleteCallback, null, true);
-            deleteButton.child.add_style_class_name('draw-on-your-screen-menu-destructive-button');
+            deleteButton.child.add_style_class_name('draw-on-gnome-menu-destructive-button');
             this._getActor(subItem).add_child(deleteButton);
         });
         
@@ -741,9 +744,9 @@ export const DrawingMenu = GObject.registerClass({
     _addSeparator(menu, thin) {
         if (this.hasSeparators) {
             let separatorItem = new PopupMenu.PopupSeparatorMenuItem(' ');
-            this._getActor(separatorItem).add_style_class_name('draw-on-your-screen-menu-separator-item');
+            this._getActor(separatorItem).add_style_class_name('draw-on-gnome-menu-separator-item');
             if (thin)
-                this._getActor(separatorItem).add_style_class_name('draw-on-your-screen-menu-thin-separator-item');
+                this._getActor(separatorItem).add_style_class_name('draw-on-gnome-menu-thin-separator-item');
             menu.addMenuItem(separatorItem);
         }
     }
@@ -796,7 +799,7 @@ const ActionButton = GObject.registerClass ({
         let button = new St.Button({ track_hover: true,
                                      x_align: Clutter.ActorAlign.CENTER,
                                      accessible_name: name,
-                                     style_class: `button draw-on-your-screen-menu-${inline ? 'inline' : 'action'}-button` });
+                                     style_class: `button draw-on-gnome-menu-${inline ? 'inline' : 'action'}-button` });
         
         button.child = new St.Icon(typeof icon == 'string' ? { icon_name: icon } : { gicon: icon });
         if (inline)
@@ -831,7 +834,7 @@ const Entry = GObject.registerClass({
 }, class Entry extends GObject.Object{
     _init(params) {
         this.params = params;
-        this.item = new PopupMenu.PopupBaseMenuItem({ style_class: 'draw-on-your-screen-menu-entry-item',
+        this.item = new PopupMenu.PopupBaseMenuItem({ style_class: 'draw-on-gnome-menu-entry-item',
                                                       activate: false,
                                                       reactive: true,
                                                       can_focus: false });
@@ -840,7 +843,7 @@ const Entry = GObject.registerClass({
         
         this.entry = new St.Entry({
             hint_text: params.hint_text || "",
-            style_class: 'search-entry draw-on-your-screen-menu-entry',
+            style_class: 'search-entry draw-on-gnome-menu-entry',
             track_hover: true,
             reactive: true,
             can_focus: true,
@@ -870,9 +873,9 @@ const Entry = GObject.registerClass({
     
     _setError(hasError) {
         if (hasError)
-            this.entry.add_style_class_name('draw-on-your-screen-menu-entry-error');
+            this.entry.add_style_class_name('draw-on-gnome-menu-entry-error');
         else
-            this.entry.remove_style_class_name('draw-on-your-screen-menu-entry-error');
+            this.entry.remove_style_class_name('draw-on-gnome-menu-entry-error');
     }
     
     _reset() {

@@ -1,6 +1,6 @@
 /*
  * Copyright 2022 zhrexl
- *
+ * Copyright 2024 Dave Prowse
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
@@ -13,8 +13,12 @@
  *
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
- *
+ * SPDX-FileCopyrightText: 2024 Dave Prowse
+ * SPDX-License-Identifier: GPL-3.0-or-later
+ * SPDX-FileContributor: Modified by Dave Prowse
  */
+
+/* eslint version: 9.16 (2024) */
 
 import Adw from 'gi://Adw';
 import Gdk from 'gi://Gdk';
@@ -54,8 +58,8 @@ const DrawingPage = GObject.registerClass({
 
         this.PalettesActionRow = Adw.ActionRow.new();
 
-        this.PalettesActionRow.set_title(_("New Pallete"));
-        this.PalettesActionRow.set_subtitle(_("Create or Import pallete"));
+        this.PalettesActionRow.set_title(_("New Palette"));
+        this.PalettesActionRow.set_subtitle(_("Create or Import palette"));
         let addButton = Gtk.Button.new_from_icon_name('list-add-symbolic');
         addButton.set_tooltip_text(_("Add a new palette"));
         addButton.valign = Gtk.Align.CENTER;
@@ -231,8 +235,7 @@ const DrawingPage = GObject.registerClass({
         /*TODO: I Should probably reutilize these widgets instead of just removing it */
         this.nPalettes.forEach((actionrow) => {
           if (actionrow){
-            this.palettes_adw_group.remove(actionrow);
-            actionrow.run_dispose();
+            this.palettes_adw_group.remove(actionrow);            
           }
         });
         this.nPalettes = [];

@@ -1,5 +1,6 @@
 /*
  * Copyright 2019 Abakkk
+ * Copyright 2024 Dave Prowse
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -16,9 +17,11 @@
  *
  * SPDX-FileCopyrightText: 2019 Abakkk
  * SPDX-License-Identifier: GPL-3.0-or-later
+ * SPDX-FileContributor: Modified by Dave Prowse
  */
 
-/* jslint esversion: 6 */
+/* jslint esversion: 6 (2019) */
+/* eslint version: 9.16 (2024) */
 /* exported DrawingHelper */
 
 import Clutter from 'gi://Clutter';
@@ -47,7 +50,7 @@ export const DrawingHelper = GObject.registerClass({
 }, class DrawingHelper  extends St.ScrollView {
     
     _init(extension, params, monitor) {
-        params.style_class = 'osd-window draw-on-your-screen-helper';
+        params.style_class = 'osd-window draw-on-gnome-helper';
         super._init(params);
         this._extension = extension;
         this.monitor = monitor;
@@ -95,7 +98,7 @@ export const DrawingHelper = GObject.registerClass({
         
         Shortcuts.GLOBAL_KEYBINDINGS.forEach((settingKeys) => {
             //if (index)
-            this.vbox.add_child(new St.BoxLayout({ vertical: false, style_class: 'draw-on-your-screen-helper-separator' }));
+            this.vbox.add_child(new St.BoxLayout({ vertical: false, style_class: 'draw-on-gnome-helper-separator' }));
             
             //settingKeys.forEach(settingKey => {
                 if (!this._extension.settings.get_strv(settingKeys)[0])
@@ -109,12 +112,12 @@ export const DrawingHelper = GObject.registerClass({
           //  });
         });
         
-        this.vbox.add_child(new St.BoxLayout({ vertical: false, style_class: 'draw-on-your-screen-helper-separator' }));
+        this.vbox.add_child(new St.BoxLayout({ vertical: false, style_class: 'draw-on-gnome-helper-separator' }));
         this.vbox.add_child(new St.Label({ text: _("Internal") }));
         
         // Shortcuts.OTHERS.forEach((pairs, index) => {
         //     if (index)
-        //         this.vbox.add_child(new St.BoxLayout({ vertical: false, style_class: 'draw-on-your-screen-helper-separator' }));
+        //         this.vbox.add_child(new St.BoxLayout({ vertical: false, style_class: 'draw-on-gnome-helper-separator' }));
             
         //     pairs.forEach(pair => {
         //         let [action, shortcut] = pair;
@@ -126,11 +129,11 @@ export const DrawingHelper = GObject.registerClass({
         //     });
         // });
         
-        // this.vbox.add_child(new St.BoxLayout({ vertical: false, style_class: 'draw-on-your-screen-helper-separator' }));
+        // this.vbox.add_child(new St.BoxLayout({ vertical: false, style_class: 'draw-on-gnome-helper-separator' }));
         
         Shortcuts.INTERNAL_KEYBINDINGS.forEach((settingKeys) => {
             //if (index)
-              this.vbox.add_child(new St.BoxLayout({ vertical: false, style_class: 'draw-on-your-screen-helper-separator' }));
+              this.vbox.add_child(new St.BoxLayout({ vertical: false, style_class: 'draw-on-gnome-helper-separator' }));
             
             //settingKeys.forEach(settingKey => {
                 if (!this._extension.internalShortcutSettings.get_strv(settingKeys)[0])
@@ -147,7 +150,7 @@ export const DrawingHelper = GObject.registerClass({
         let mediaKeysSettings;
         try { mediaKeysSettings = this._extension.getSettings(MEDIA_KEYS_SCHEMA); } catch(e) { return; }
         
-        this.vbox.add_child(new St.BoxLayout({ vertical: false, style_class: 'draw-on-your-screen-helper-separator' }));
+        this.vbox.add_child(new St.BoxLayout({ vertical: false, style_class: 'draw-on-gnome-helper-separator' }));
         this.vbox.add_child(new St.Label({ text: _("System") }));
         
         for (let settingKey of MEDIA_KEYS_KEYS) {
