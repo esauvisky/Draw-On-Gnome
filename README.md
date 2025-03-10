@@ -32,7 +32,7 @@ Thank you to all the contributors! 😎
 
    The script will attempt to identify your version of GNOME and install the correct version of the extension automatically.
 
-   > Note: Currently, the script will identify GNOME v47 through v40 and back all the way to v3.xx.
+   > Note: Currently, the script will identify GNOME v48 through v40 and back all the way to v3.xx.
 
    > **IMPORTANT!!** Always check scripts before running them! If you are uncomfortable running the script, or cannot run the script, then install manually with an option listed in the [Documentation](https://daveprowse.github.io/Draw-On-GNOME/installation/).
 
