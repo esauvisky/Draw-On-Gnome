@@ -26,7 +26,7 @@
 import Clutter from 'gi://Clutter';
 import GLib from 'gi://GLib';
 import GObject from 'gi://GObject';
-import Gtk from 'gi://Gtk';
+
 import St from 'gi://St';
 
 import * as BoxPointer from 'resource:///org/gnome/shell/ui/boxpointer.js';
@@ -41,8 +41,7 @@ import {gettext as _, pgettext} from 'resource:///org/gnome/shell/extensions/ext
 
 import { CURATED_UUID as UUID } from './utils.js';
 
-
-
+const Gtk = imports.gi.Gtk;
 const GS_VERSION = Config.PACKAGE_VERSION;
 // 150 labels with font-family style take ~15Mo
 const FONT_FAMILY_STYLE = true;

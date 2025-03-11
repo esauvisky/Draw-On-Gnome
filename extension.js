@@ -35,7 +35,7 @@ import { Extension } from 'resource:///org/gnome/shell/extensions/extension.js';
 
 import { Files } from './files.js';
 
-import * as AreaManager from './ui/areamanager.js';
+import * as AreaManager from './areamanager.js';
 
 
 
@@ -83,12 +83,11 @@ class Indicator extends SystemIndicator {
 });
 
 
-export default class DrawOnYourScreenExtension extends Extension {
+export default class DrawOnGnomeExtension extends Extension {
 
     constructor(metadata) {
-        super(metadata);
-        this.initTranslations();
-        this.FILES = new Files(this);
+        super(metadata);        
+        
     }
 
     create_toggle() {
@@ -115,6 +114,8 @@ export default class DrawOnYourScreenExtension extends Extension {
         this.create_toggle();
         
         this.getSettings().connect('changed', this._onSettingsChanged.bind(this));
+
+        this.FILES = new Files(this);
     }
 
     disable() {
@@ -125,6 +126,9 @@ export default class DrawOnYourScreenExtension extends Extension {
         delete this.areaManager;
         delete this.settings;
         delete this.internalShortcutSettings;
+        this.FILES = null;
+        this.drawingSettings = null;
+        this.toggle = null; 
     }
 
     toggle_drawing()

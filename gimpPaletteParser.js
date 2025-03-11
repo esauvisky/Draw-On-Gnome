@@ -25,7 +25,7 @@
 /* exported parseFile */
 
 
-const decoder = new TextDecoder('utf-8');
+
 
 /*
  * [
@@ -88,6 +88,7 @@ function parse(contents) {
 }
 
 export function parseFile(file) {
+    const decoder = new TextDecoder('utf-8');
     if (!file.query_exists(null))
         return [];
     

@@ -1,18 +1,20 @@
 {
-    "name": "Draw On GNOME",
     "uuid": "draw-on-gnome@daveprowse.github.io",
+    "name": "Draw On GNOME",
     "description": "Annotation tool for the GNOME desktop",
-    "gettext-domain": "draw-on-gnome",
+    "url": "https://github.com/daveprowse/Draw-On-GNOME",
+    "donations": {
+        "patreon": "https://www.patreon.com/ProwseTech"
+    },    
+    "gettext-domain": "draw-on-gnome", 
+    "settings-schema": "org.gnome.shell.extensions.draw-on-gnome",
     "data-dir": "draw-on-gnome",
-    "persistent-file-name": "persistent",    
+    "persistent-file-name": "persistent",
     "shell-version": [        
         "46",
         "47",
         "48"
     ],    
-    "url": "https://github.com/daveprowse/Draw-On-GNOME",
-    "settings-schema": "org.gnome.shell.extensions.draw-on-gnome",    
-    "version-name": "1.0",
-    "version": 1
-    
+    "version-name": "1.1",
+    "version": 1    
 }

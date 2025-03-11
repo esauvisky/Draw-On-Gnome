@@ -32,7 +32,7 @@ Thank you to all the contributors! 😎
 
    The script will attempt to identify your version of GNOME and install the correct version of the extension automatically.
 
-   > Note: Currently, the script will identify GNOME v47 through v40 and back all the way to v3.xx.
+   > Note: Currently, the script will identify GNOME v48 through v40 and back all the way to v3.xx.
 
    > **IMPORTANT!!** Always check scripts before running them! If you are uncomfortable running the script, or cannot run the script, then install manually with an option listed in the [Documentation](https://daveprowse.github.io/Draw-On-GNOME/installation/).
 
@@ -69,8 +69,12 @@ It's back to the drawing board my friends! Enjoy! 😎
 
 📖 For manual installation procedures (git clone and tarball) see the **[Documentation](https://daveprowse.github.io/Draw-On-GNOME/installation/)**.
 
-- Forked from: https://github.com/zhrexl/DrawOnYourScreen2
-- Original fork: https://codeberg.org/som/DrawOnYourScreen
-
 > Documentation is generated using Material for Mkdocs. Check it out:
 > [![Built with Material for MkDocs](https://img.shields.io/badge/Material_for_MkDocs-526CFE?style=for-the-badge&logo=MaterialForMkDocs&logoColor=white)](https://squidfunk.github.io/mkdocs-material/)
+
+---
+
+Thanks to the original author and past maintainers:
+
+- Forked from: https://github.com/zhrexl/DrawOnYourScreen2
+- Original work: https://codeberg.org/som/DrawOnYourScreen

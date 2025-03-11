@@ -36,7 +36,7 @@ const Color = Clutter.Color ?? Cogl.Color;
 import Gio from 'gi://Gio';
 import GLib from 'gi://GLib';
 import GObject from 'gi://GObject';
-import Gtk from 'gi://Gtk';
+
 import Pango from 'gi://Pango';
 import Shell from 'gi://Shell';
 import St from 'gi://St';
@@ -51,6 +51,7 @@ import * as Elements from './elements.js'
 import { Image } from './files.js'
 import * as Menu from './menu.js'
 
+const Gtk = imports.gi.Gtk;
 
 const MOTION_TIME = 1; // ms, time accuracy for free drawing, max is about 33 ms. The lower it is, the smoother the drawing is.
 const TEXT_CURSOR_TIME = 600; // ms
@@ -1285,6 +1286,9 @@ export const DrawingArea = GObject.registerClass({
     }
 
     _onDestroy() {
+        this.textCursorTimeoutId = null; // To avoid calling _stopTextCursorTimeout.
+        this._stopAll(true);
+        
         this._extension.drawingSettings.disconnect(this.drawingSettingsChangedHandler);
         this.erase();
         if (this._menu)
