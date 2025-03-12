@@ -626,7 +626,7 @@
 <p>You might also consider the use of a Stream Deck or similar device. If you do, check out this <a href="https://github.com/timothycrosley/streamdeck-ui" target="_blank">Linux UI</a> for the Elgato Stream Decks. Thank you Timothy Crosley!</p>
 </div>
 <h2 id="color-picker">Color Picker</h2>
-<p>Here is one awesome function of DOYS - the <em>Color Picker</em>.</p>
+<p>Here is one awesome function of Draw On GNOME - the <em>Color Picker</em>.</p>
 <p>Activate it with <code>Ctrl+0</code></p>
 <p>Now you will see a dropper tool. Simply hover it over any color on your screen and mouse-click. It will grab that color (or the closest representation it can establish), change to that color, show the hex code on the bottom of the screen, and return to the tool you were using last.</p>
 <p>Grab any color in the RGB spectrum that you can display on your screen!</p>
@@ -637,7 +637,7 @@
 <p>By default, fill is disabled. So for example, if you were to make a rectangle, it would show the outline only. To enable/disable fill, either press <code>Ctrl+Shift+A</code>, or select the "Fill" option in the right-click menu.</p>
 <div class="admonition note">
 <p class="admonition-title">Fill Rules are Complex!</p>
-<p class="annotate">If you are using the polyline tool, or other tools that have intersecting lines, fill can behave differently depending on the fill rule. In DOYS, Non-zero(1) is the default rule, and Even-odd(2) is the secondary rule.</p>
+<p class="annotate">If you are using the polyline tool, or other tools that have intersecting lines, fill can behave differently depending on the fill rule. In Draw On GNOME, Non-zero(1) is the default rule, and Even-odd(2) is the secondary rule.</p>
 <ol>
 <li><img alt="🙋‍♂️" class="twemoji" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@15.1.0/assets/svg/1f64b-200d-2642-fe0f.svg" title=":man_raising_hand:" /> For more information on Non-zero see <a href="https://en.wikipedia.org/wiki/Nonzero-rule" target="_blank">this link</a>.</li>
 <li><img alt="🙋‍♂️" class="twemoji" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@15.1.0/assets/svg/1f64b-200d-2642-fe0f.svg" title=":man_raising_hand:" /> For more information on Even-odd see <a href="https://en.wikipedia.org/wiki/Even%E2%80%93odd_rule" target="_blank">this link</a>.</li>
@@ -670,17 +670,17 @@
 <p>Currently, you cannot re-order the palettes by drag-and-drop. This is on the <a href="../roadmap/">roadmap</a>!</p>
 </div>
 <h3 id="creating-a-new-palette">Creating a new Palette</h3>
-<p>If you would like to make your own color scheme, simply go to <strong>DOYS Settings &gt; Drawing Page</strong>.</p>
+<p>If you would like to make your own color scheme, simply go to <strong>Draw On GNOME Settings &gt; Drawing Page</strong>.</p>
 <p>There you will see the <strong>Palettes</strong> section. In "New Palette" click the + sign to create a new palette. Then, next to the new palette that is created, click the Edit button. There you can change the name of the palette, select the colors you desire, and name each of them. "X" out when you are done.</p>
 <p>Select the new palette from the right-click menu (or <code>Ctrl+/</code>) and utilize <code>Ctrl+1</code> through <code>Ctrl+9</code> as you normally would.</p>
 <h3 id="removing-a-palette">Removing a Palette</h3>
 <ul>
-<li>Go to <strong>DOYS Settings &gt; Drawing Page</strong>.</li>
+<li>Go to <strong>Draw on GNOME Settings &gt; Drawing Page</strong>.</li>
 <li>
 <p>Click the X for the palette you want to remove.</p>
 <div class="admonition warning">
 <p class="admonition-title">Warning</p>
-<p class="annotate">Currently, this cannot be undone in the DOYS Preferences - Drawing Page. Use with caution! Backup your extension directory before making these types of changes!(1)</p>
+<p class="annotate">Currently, this cannot be undone in the Draw On GNOME Preferences - Drawing Page. Use with caution! Backup your extension directory before making these types of changes!(1)</p>
 <ol>
 <li><img alt="🙋‍♂️" class="twemoji" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@15.1.0/assets/svg/1f64b-200d-2642-fe0f.svg" title=":man_raising_hand:" /> This command should do the trick:
 <div class="language-console highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="go">sudo cp -r ~/.local/share/gnome-shell/extensions/draw-on-gnome@daveprowse.github.io/ ~/.local/share/gnome-shell/extensions/draw-on-gnome@daveprowse.github.io-backup</span>
