@@ -1,4 +1,4 @@
-# DRAW ON GNOME
+# Draw On Gnome
 
 Annotate your GNOME desktop with **`Super+Alt+D`**.
 

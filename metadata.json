@@ -1,7 +1,7 @@
 {
     "uuid": "draw-on-gnome@daveprowse.github.io",
-    "name": "Draw On GNOME",
-    "description": "Annotation tool for the GNOME desktop",
+    "name": "Draw On Gnome",
+    "description": "Annotation tool for the GNOME desktop. This is a fork of the original DrawOnYourScreen by abakkk.",
     "url": "https://github.com/daveprowse/Draw-On-GNOME",
     "donations": {
         "patreon": "https://www.patreon.com/ProwseTech"

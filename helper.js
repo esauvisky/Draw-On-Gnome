@@ -34,7 +34,7 @@ import { gettext as _ } from 'resource:///org/gnome/shell/extensions/extension.j
 
 import { CURATED_UUID as UUID } from './utils.js';
 
-const Gtk = imports.gi.Gtk;
+import Gtk from 'gi://Gtk?version=4.0';
 
 const GS_VERSION = Config.PACKAGE_VERSION;
 const Tweener = GS_VERSION < '3.33.0' ? imports.ui.tweener : null;

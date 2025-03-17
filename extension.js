@@ -129,6 +129,8 @@ export default class DrawOnGnomeExtension extends Extension {
         this.FILES = null;
         this.drawingSettings = null;
         this.toggle = null; 
+        this.areaManager = null;
+        this.internalShortcutSettings = null;
     }
 
     toggle_drawing()

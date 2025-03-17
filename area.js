@@ -51,7 +51,7 @@ import * as Elements from './elements.js'
 import { Image } from './files.js'
 import * as Menu from './menu.js'
 
-const Gtk = imports.gi.Gtk;
+import Gtk from 'gi://Gtk?version=4.0';
 
 const MOTION_TIME = 1; // ms, time accuracy for free drawing, max is about 33 ms. The lower it is, the smoother the drawing is.
 const TEXT_CURSOR_TIME = 600; // ms
@@ -1244,7 +1244,7 @@ export const DrawingArea = GObject.registerClass({
                 });
             }
         } catch (e) {
-            log(`${this._extension.metadata.uuid}: color picker failed: ${e.message}`);
+            console.log(`${this._extension.metadata.uuid}: color picker failed: ${e.message}`);
             this.initPointerCursor();
         }
     }
@@ -1490,7 +1490,7 @@ export const DrawingArea = GObject.registerClass({
         if (success)
             return color;
 
-        log(`${this._extension.metadata.uuid}: "${string}" color cannot be parsed.`);
+        console.log(`${this._extension.metadata.uuid}: "${string}" color cannot be parsed.`);
         color = StaticColor[fallback.toUpperCase()];
         color.toJSON = () => fallback;
         color.toString = () => fallback;
