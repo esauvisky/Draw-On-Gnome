@@ -23,8 +23,9 @@
 
 /* eslint version: 9.16 (2024) */
 
-import Gtk from 'gi://Gtk?version=4.0';
-import Adw from 'gi://Adw';
+// import Gtk from 'gi://Gtk?version=4.0';
+// import Gdk from 'gi://Gdk?version=4.0';
+// import Adw from 'gi://Adw';
 
 import { ExtensionPreferences } from 'resource:///org/gnome/Shell/Extensions/js/extensions/prefs.js';
 
@@ -32,12 +33,10 @@ import PreferencesPage from './ui/preferencespage.js';
 import DrawingPage from './ui/drawingpage.js';
 import AboutPage from './ui/about.js';
 
-
-export default class DrawOnYourScreenExtensionPreferences extends ExtensionPreferences {
+export default class DrawOnGnomeExtensionPreferences extends ExtensionPreferences {
 
     constructor(metadata) {
-        super(metadata);
-        this.initTranslations();
+        super(metadata);        
     }
     
     fillPreferencesWindow(window) {

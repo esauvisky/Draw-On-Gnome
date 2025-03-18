@@ -25,7 +25,7 @@
 /* exported parseFile */
 
 
-const decoder = new TextDecoder('utf-8');
+
 
 /*
  * [
@@ -51,7 +51,7 @@ function parse(contents) {
 
     line = lines.shift();
     if (!line || !line.startsWith('GIMP Palette'))
-        log("Missing magic header");
+        console.log("Missing magic header");
 
     line = lines.shift();
     if (line.startsWith('Name:')) {
@@ -88,6 +88,7 @@ function parse(contents) {
 }
 
 export function parseFile(file) {
+    const decoder = new TextDecoder('utf-8');
     if (!file.query_exists(null))
         return [];
     

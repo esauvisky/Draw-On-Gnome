@@ -1,8 +1,8 @@
-# DRAW ON GNOME
+# Draw On Gnome
 
 Annotate your GNOME desktop with **`Super+Alt+D`**.
 
-Documentation is **[here](https://daveprowse.github.io/Draw-On-GNOME/)**. For news, click **[here](https://daveprowse.github.io/Draw-On-GNOME/blog/)**.
+Documentation is **[here](https://daveprowse.github.io/Draw-On-Gnome/)**. For news, click **[here](https://daveprowse.github.io/Draw-On-Gnome/blog/)**.
 
 Thank you to all the contributors! 😎
 
@@ -20,7 +20,7 @@ Thank you to all the contributors! 😎
 
 > Note: We are working on getting the extension approved by GNOME so that it will be listed on https://extensions.gnome.org (E.G.O.) 
 
-> Stay tuned! Click [here](https://daveprowse.github.io/Draw-On-GNOME/blog/) for updates.
+> Stay tuned! Click [here](https://daveprowse.github.io/Draw-On-Gnome/blog/) for updates.
 
 ---
 
@@ -34,7 +34,7 @@ Thank you to all the contributors! 😎
 
    > Note: Currently, the script will identify GNOME v48 through v40 and back all the way to v3.xx.
 
-   > **IMPORTANT!!** Always check scripts before running them! If you are uncomfortable running the script, or cannot run the script, then install manually with an option listed in the [Documentation](https://daveprowse.github.io/Draw-On-GNOME/installation/).
+   > **IMPORTANT!!** Always check scripts before running them! If you are uncomfortable running the script, or cannot run the script, then install manually with an option listed in the [Documentation](https://daveprowse.github.io/Draw-On-Gnome/installation/).
 
 2. Logout and log back in.
 
@@ -67,7 +67,7 @@ It's back to the drawing board my friends! Enjoy! 😎
 
 ## Manual Installs
 
-📖 For manual installation procedures (git clone and tarball) see the **[Documentation](https://daveprowse.github.io/Draw-On-GNOME/installation/)**.
+📖 For manual installation procedures (git clone and tarball) see the **[Documentation](https://daveprowse.github.io/Draw-On-Gnome/installation/)**.
 
 > Documentation is generated using Material for Mkdocs. Check it out:
 > [![Built with Material for MkDocs](https://img.shields.io/badge/Material_for_MkDocs-526CFE?style=for-the-badge&logo=MaterialForMkDocs&logoColor=white)](https://squidfunk.github.io/mkdocs-material/)

@@ -23,7 +23,7 @@
 /* eslint version: 9.16 (2024) */
 /* exported Icons, Image, Images, Json, Jsons, getDateString, saveSvg */
 
-import Gdk from 'gi://Gdk';
+
 import GdkPixbuf from 'gi://GdkPixbuf';
 import Gio from 'gi://Gio';
 import GLib from 'gi://GLib';
@@ -31,8 +31,6 @@ import GObject from 'gi://GObject';
 import St from 'gi://St';
 
 import { CURATED_UUID as UUID } from './utils.js';
-
-
 
 class Icons {
 

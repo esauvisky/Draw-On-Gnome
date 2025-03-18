@@ -35,8 +35,8 @@ import * as PanelMenu from 'resource:///org/gnome/shell/ui/panelMenu.js';
 
 import {gettext as _} from 'resource:///org/gnome/shell/extensions/extension.js';
 
-import * as Area from '../area.js';
-import * as Helper from '../helper.js';
+import * as Area from './area.js';
+import * as Helper from './helper.js';
 
 
 
@@ -161,7 +161,7 @@ export class AreaManager {
         
         for (let i = 0; i < this.monitors.length; i++) {
             let monitor = this.monitors[i];
-            let helper = new Helper.DrawingHelper(this._extension, { name: 'drawOnYourScreenHelper' + i }, monitor);
+            let helper = new Helper.DrawingHelper(this._extension, { name: 'drawOnGnomeHelper' + i }, monitor);
             let loadPersistent = i == Main.layoutManager.primaryIndex && this.persistentOverRestarts;
             // Some utils for the drawing area menus.
             let areaManagerUtils = {
@@ -169,7 +169,7 @@ export class AreaManager {
                 togglePanelAndDockOpacity: this.togglePanelAndDockOpacity.bind(this),
                 openPreferences: this.openPreferences.bind(this)
             };
-            let area = new Area.DrawingArea(this._extension, { name: 'drawOnYourScreenArea' + i }, monitor, helper, areaManagerUtils, loadPersistent, toolConf);
+            let area = new Area.DrawingArea(this._extension, { name: 'drawOnGnomeArea' + i }, monitor, helper, areaManagerUtils, loadPersistent, toolConf);
             
             Main.layoutManager._backgroundGroup.insert_child_above(area, Main.layoutManager._bgManagers[i].backgroundActor);
             if (!this.onDesktop)
