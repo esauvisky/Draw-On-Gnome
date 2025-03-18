@@ -54,7 +54,7 @@ const AboutPage = GObject.registerClass({
         scrolledWindow.set_child(vbox);
 
         // Translators: you are free to translate the extension name, that is displayed in About page, or not
-        let name = "<b> " + _("Draw On GNOME") + "</b>";
+        let name = "<b> " + _("Draw On Gnome") + "</b>";
         // Translators: version number in "About" page
         let version = _("Version %f").format(extensionPreferences.metadata.version);
         // Translators: you are free to translate the extension description, that is displayed in About page, or not
