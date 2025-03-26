@@ -885,7 +885,7 @@ export const DrawingArea = GObject.registerClass({
         else if (this.hasManipulationTool)
             this.setPointerCursor(this.grabbedElement ? 'MOVE_OR_RESIZE_WINDOW' : 'DEFAULT');
         else if (this.currentElement && this.currentElement.shape == Shape.TEXT && this.isWriting)
-            this.setPointerCursor('IBEAM');
+            this.setPointerCursor('TEXT');
         else if (!this.currentElement)
             this.setPointerCursor(this.currentTool == Shape.NONE ? 'POINTER' : 'CROSSHAIR');
         else if (this.currentElement.shape != Shape.NONE && controlPressed)
