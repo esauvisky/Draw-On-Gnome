@@ -4,8 +4,6 @@ Annotate your GNOME desktop with **`Super+Alt+D`**.
 
 ## IMPORTANT!
 
-**There is currently a bug with GNOME v48 (as of March 23rd updates). The extension will crash the session if you start it. Please leave it disabled in GNOME v48 until we figure out the problem! Thank you!**
-
 Documentation is **[here](https://daveprowse.github.io/Draw-On-Gnome/)**. For news, click **[here](https://daveprowse.github.io/Draw-On-Gnome/blog/)**.
 
 Thank you to all the contributors! 😎
