@@ -7,9 +7,7 @@
     "settings-schema": "org.gnome.shell.extensions.draw-on-gnome",
     "data-dir": "draw-on-gnome",
     "persistent-file-name": "persistent",
-    "shell-version": [        
-        "46",
-        "47",
+    "shell-version": [                
         "48"
     ],    
     "version-name": "1.2",
