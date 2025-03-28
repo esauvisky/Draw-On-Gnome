@@ -1,6 +1,6 @@
 # Draw On Gnome
 
-Annotate your GNOME desktop with **`Super+Alt+D`**.
+Annotate your GNOME™ desktop with **`Super+Alt+D`**.
 
 Documentation is **[here](https://daveprowse.github.io/Draw-On-Gnome/)**. For news, click **[here](https://daveprowse.github.io/Draw-On-Gnome/blog/)**.
 
