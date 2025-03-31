@@ -879,17 +879,18 @@ export const DrawingArea = GObject.registerClass({
         }
     }
 
+    //Modifying MOVE_OR_RESIZE_WINDOW, to MOVE, both now function. //check in future versions of GNOME. 
     updatePointerCursor(controlPressed) {
         if (this.currentTool == Manipulation.MIRROR && this.grabbedElementLocked)
             this.setPointerCursor('CROSSHAIR');
         else if (this.hasManipulationTool)
-            this.setPointerCursor(this.grabbedElement ? 'MOVE_OR_RESIZE_WINDOW' : 'DEFAULT');
+            this.setPointerCursor(this.grabbedElement ? 'MOVE' : 'DEFAULT');
         else if (this.currentElement && this.currentElement.shape == Shape.TEXT && this.isWriting)
             this.setPointerCursor('TEXT');
         else if (!this.currentElement)
             this.setPointerCursor(this.currentTool == Shape.NONE ? 'POINTER' : 'CROSSHAIR');
         else if (this.currentElement.shape != Shape.NONE && controlPressed)
-            this.setPointerCursor('MOVE_OR_RESIZE_WINDOW');
+            this.setPointerCursor('MOVE');
     }
 
     initPointerCursor() {
