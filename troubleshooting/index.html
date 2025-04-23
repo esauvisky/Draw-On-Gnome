@@ -11,6 +11,10 @@
       
       
       
+        <link rel="prev" href="../blog/">
+      
+      
+        <link rel="next" href="../roadmap/">
       
       
       <link rel="icon" href="../assets/laptop-computer.svg">
@@ -18,7 +22,7 @@
     
     
       
-        <title>Troubleshooting - Draw On Gnome</title>
+        <title>TROUBLESHOOTING - Draw On Gnome</title>
       
     
     
@@ -81,7 +85,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#logging" class="md-skip">
+        <a href="#disabling-the-extension" class="md-skip">
           Skip to content
         </a>
       
@@ -116,7 +120,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              Troubleshooting
+              TROUBLESHOOTING
             
           </span>
         </div>
@@ -430,6 +434,91 @@
       
   
   
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  <span class="md-ellipsis">
+    TROUBLESHOOTING
+    
+  </span>
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  <span class="md-ellipsis">
+    TROUBLESHOOTING
+    
+  </span>
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#disabling-the-extension" class="md-nav__link">
+    <span class="md-ellipsis">
+      Disabling the Extension
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#logging" class="md-nav__link">
+    <span class="md-ellipsis">
+      Logging
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#removing-a-current-installation-of-draw-on-gnome" class="md-nav__link">
+    <span class="md-ellipsis">
+      Removing a current installation of Draw On Gnome
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
   
   
     <li class="md-nav__item">
@@ -508,9 +597,16 @@
   
 
 
-  <h1>Troubleshooting</h1>
+  <h1>TROUBLESHOOTING</h1>
 
 <p>At times you might need to troubleshoot issues with Draw On Gnome. This page shows some ways that you can go about identifying and potentially fixing problems with the extension.</p>
+<h2 id="disabling-the-extension">Disabling the Extension</h2>
+<p>If you are experiencing issues that you think are related to the Draw On Gnome extension, try disabling the extension and then checking the logs for errors.</p>
+<p>To disable the extension you have two options:</p>
+<ul>
+<li>In the CLI: type <code>gnome-extensions disable draw-on-gnome@daveprowse.github.io</code></li>
+<li>In the GUI: Use the <code>gnome-extensions-app</code> program and click the toggle to disable Draw On Gnome.</li>
+</ul>
 <h2 id="logging">Logging</h2>
 <p>To check the logs for Draw On Gnome, try the following options in the terminal:</p>
 <p><code>journalctl -f /usr/bin/gnome-shell</code></p>
@@ -518,8 +614,34 @@
 <p>Other options:</p>
 <p><code>journalctl -b | grep draw-on-gnome</code></p>
 <p><code>journalctl -b -l -n 3000</code></p>
-<p>If you find an issue, please report it <a href="https://github.com/daveprowse/Draw-On-Gnome/issues" target="_blank">here</a>. However, please examine the current open Issues before you submit a new one - it might already exist.</p>
+<p>If you find an issue, please report it <a href="https://github.com/daveprowse/Draw-On-Gnome/issues" target="_blank">here</a>. However, please examine the current open (and closed) Issues before you submit a new one - it might already exist.</p>
 <h2 id="removing-a-current-installation-of-draw-on-gnome">Removing a current installation of Draw On Gnome</h2>
+<p>Sometimes, an extension can fail or behave in a buggy manner. This could be for several reasons. If this happens, the best practice is to remove the extension entirely and reinstall it.</p>
+<p>There are a couple of ways to remove the Draw On Gnome extension:</p>
+<ol>
+<li>
+<p>Using the CLI</p>
+<p>In the Terminal type <code>gnome-extensions uninstall draw-on-gnome@daveprowse.github.io</code></p>
+</li>
+<li>
+<p>Using the gnome-extensions-app program</p>
+<ul>
+<li>Install the program if isn't already there, for example: <code>sudo apt install gnome-extensions-app</code></li>
+<li>Open the program <code>gnome-extensions-app</code>, locate the extension, click the vertical three dots button and select "Remove".</li>
+</ul>
+</li>
+<li>
+<p>Removing it manually.</p>
+<ul>
+<li><code>sudo rm -r ~/.local/share/gnome-shell/extensions/draw-on-gnome@daveprowse.github.io</code></li>
+<li>Be sure to check the <code>extensions</code> directory for any remnant files.<blockquote>
+<p>Note: If you have an older version of the extension, it might go under a different name. Check the <code>extensions</code> directory for any other names that it might go by.</p>
+</blockquote>
+</li>
+</ul>
+</li>
+</ol>
+<p>Then, reinstall. Installation methods can be found <a href="../installation/">here</a>.</p>
 
 
 
