@@ -665,6 +665,14 @@
 </li>
 <li>
 <p>Removing it manually.</p>
+</li>
+</ol>
+<div class="admonition warning">
+<p class="admonition-title">Backup your current extension!</p>
+<p>I recommend backing up the extension before removing it.
+Do this by copying it and renaming it. 
+For example, in <code>~/.local/share/gnome-shell/extensions</code> type the following command:
+<code>cp -r draw-on-gnome@daveprowse.github.io draw-on-gnome@daveprowse.github.io.bak</code></p>
 <ul>
 <li><code>sudo rm -r ~/.local/share/gnome-shell/extensions/draw-on-gnome@daveprowse.github.io</code></li>
 <li>Be sure to check the <code>extensions</code> directory for any remnant files.<blockquote>
@@ -672,8 +680,7 @@
 </blockquote>
 </li>
 </ul>
-</li>
-</ol>
+</div>
 <p>Then, reinstall. Installation methods can be found <a href="../installation/">here</a>.</p>
 <h2 id="extension-settings-with-dconf">Extension Settings with dconf</h2>
 <p>Aside from modifying Draw On Gnome settings within the Preferences page, you can also go to the dconf editor. To use this tool, do the following:</p>
