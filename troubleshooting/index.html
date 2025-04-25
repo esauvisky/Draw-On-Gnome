@@ -11,10 +11,10 @@
       
       
       
-        <link rel="prev" href="../blog/">
+        <link rel="prev" href="../shortcuts/">
       
       
-        <link rel="next" href="../roadmap/">
+        <link rel="next" href="../blog/">
       
       
       <link rel="icon" href="../assets/laptop-computer.svg">
@@ -411,29 +411,6 @@
       
   
   
-  
-    
-  
-  
-    <li class="md-nav__item">
-      <a href="../blog/" class="md-nav__link">
-        
-  
-  <span class="md-ellipsis">
-    NEWS
-    
-  </span>
-  
-
-      </a>
-    </li>
-  
-
-    
-      
-      
-  
-  
     
   
   
@@ -507,10 +484,66 @@
   
 </li>
       
+        <li class="md-nav__item">
+  <a href="#extension-settings-with-dconf" class="md-nav__link">
+    <span class="md-ellipsis">
+      Extension Settings with dconf
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#specific-issues" class="md-nav__link">
+    <span class="md-ellipsis">
+      Specific Issues
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Specific Issues">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#right-click-menu-loses-functionality" class="md-nav__link">
+    <span class="md-ellipsis">
+      Right-click Menu Loses Functionality
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
     </ul>
   
 </nav>
       
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../blog/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    NEWS
+    
+  </span>
+  
+
+      </a>
     </li>
   
 
@@ -642,6 +675,38 @@
 </li>
 </ol>
 <p>Then, reinstall. Installation methods can be found <a href="../installation/">here</a>.</p>
+<h2 id="extension-settings-with-dconf">Extension Settings with dconf</h2>
+<p>Aside from modifying Draw On Gnome settings within the Preferences page, you can also go to the dconf editor. To use this tool, do the following:</p>
+<ol>
+<li>Install the dconf-editor: <code>sudo apt install dconf-editor</code></li>
+<li>Run it: <code>dconf-editor</code></li>
+<li>Navigate to the following path: <code>/org/gnome/shell/extensions/draw-on-gnome</code></li>
+</ol>
+<p>From there you can customize your extension. Not only are all of the configurations available that are listed in the Preferences page, but you can also make in-depth modifications that go beyond the Preferences page, for example within the "Drawing" directory.</p>
+<p>You can also use this tool to fix some issues that might occur with the extension. </p>
+<div class="admonition example">
+<p class="admonition-title">BONUS: Any changes you make to an extension can be "watched" in real time using <code>dconf-cli</code>.</p>
+<ul>
+<li>Install it (if not already there): <code>sudo apt install dconf-cli</code></li>
+<li>Watch changes in real time with this command: <code>dconf watch /</code><blockquote>
+<p>Note: Also, you can view the content in the CLI, example: <code>dconf list /org/gnome/shell/extensions</code></p>
+</blockquote>
+</li>
+</ul>
+</div>
+<blockquote>
+<p>Note: /org and dconf use GSettings (the dconf database) instead of a typical file location in Linux. 
+The path to the DB is <code>~/.config/dconf/user</code>.</p>
+</blockquote>
+<h2 id="specific-issues">Specific Issues</h2>
+<p>Here are some specific issues that you might encounter.</p>
+<h3 id="right-click-menu-loses-functionality">Right-click Menu Loses Functionality</h3>
+<p>If the top and bottom icons don't appear, and the drop down menus won't display:</p>
+<ul>
+<li>Check the scaling in GNOME. Anything higher than 150% scaling could cause this issue.</li>
+<li>Check the resolution settings.</li>
+<li>Check if any other extensions are interfering with Draw On Gnome. Disable all other extensions and see if the issue persists.</li>
+</ul>
 
 
 
