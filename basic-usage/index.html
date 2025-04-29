@@ -728,14 +728,22 @@
 <p>Press <code>Ctrl+O</code> to open the latest drawing. Use <code>Ctrl+O</code> or <code>Ctrl+Shift+O</code> to cycle through the history of drawings. You can also select from a list of drawings in the pop-up menu.</p>
 <h2 id="opening-the-preferences-page">Opening the Preferences Page</h2>
 <p>The Preferences page is where you can go to configure global settings and set keyboard shortcuts.</p>
-<p>The preferences page can only be accessed outside of the extension. You can get to it from the CLI, the GNOME shell (GUI) or from the extension itself:</p>
+<p>The preferences page functions outside of the extension. However, you can access it from the CLI, the GNOME shell (GUI) or from <em>within</em> the extension itself:</p>
 <p><strong>CLI</strong></p>
 <div class="language-text highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>gnome-extensions prefs draw-on-gnome@daveprowse.github.io
 </span></code></pre></div>
 <p><strong>GUI</strong></p>
 <p>Open <code>gnome-extensions-app</code> and click the three vertical dots next to Draw-On-Gnome.</p>
+<div class="admonition tip annotate">
+<p class="admonition-title">Tip</p>
+<p><img alt="🙋‍♂️" class="twemoji" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@15.1.0/assets/svg/1f64b-200d-2642-fe0f.svg" title=":man_raising_hand:" /> You can install the Gnome Extensions App package within your Linux distribution:</p>
+<ul>
+<li>in most Linux: <code>sudo dnf install gnome-extensions-app</code></li>
+<li>otherwise: <code>sudo apt install gnome-shell-extensions-prefs</code></li>
+</ul>
+</div>
 <p><strong>From within Draw-On-Gnome</strong></p>
-<p>Right-click for the pop-up menu, then click the 2nd icon from the right on the bottom of the window.</p>
+<p>Right-click for the pop-up menu, then click the 2nd icon from the right on the bottom of the window. That will disable Draw On Gnome and open the Preferences page.</p>
 <div class="admonition note">
 <p class="admonition-title">Access the Drawing Page Too!</p>
 <p>The window that contains the "Preferences" tab also has the Drawing Page where you can work with Palettes, Area, and Tools. You will also see an informational "About" tab.</p>
