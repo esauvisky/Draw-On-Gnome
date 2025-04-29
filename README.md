@@ -1,8 +1,10 @@
 # Draw On Gnome
 
+![Draw-On-Gnome](https://daveprowse.github.io/Draw-On-Gnome/images/dog.png)
+
 Annotate your GNOME™ desktop with **`Super+Alt+D`**.
 
-Documentation is **[here](https://daveprowse.github.io/Draw-On-Gnome/)**. For news, click **[here](https://daveprowse.github.io/Draw-On-Gnome/blog/)**.
+Documentation is **[here](https://daveprowse.github.io/Draw-On-Gnome/)**.
 
 Thank you to all the contributors! 😎
 
@@ -18,9 +20,9 @@ Thank you to all the contributors! 😎
 
 ## Installation
 
-> Note: We are working on getting the extension approved by GNOME so that it will be listed on https://extensions.gnome.org (E.G.O.) 
+> Note: We are working on getting the extension approved by GNOME so that it will be listed on https://extensions.gnome.org (E.G.O.).
 
-> Stay tuned! Click [here](https://daveprowse.github.io/Draw-On-Gnome/blog/) for updates.
+> To offer help see [this link](https://github.com/daveprowse/Draw-On-Gnome/issues/16).
 
 ---
 
@@ -68,6 +70,8 @@ It's back to the drawing board my friends! Enjoy! 😎
 ## Manual Installs
 
 📖 For manual installation procedures (git clone and tarball) see the **[Documentation](https://daveprowse.github.io/Draw-On-Gnome/installation/)**.
+
+For news, click **[here](https://daveprowse.github.io/Draw-On-Gnome/blog/)**.
 
 > Documentation is generated using Material for Mkdocs. Check it out:
 > [![Built with Material for MkDocs](https://img.shields.io/badge/Material_for_MkDocs-526CFE?style=for-the-badge&logo=MaterialForMkDocs&logoColor=white)](https://squidfunk.github.io/mkdocs-material/)
