@@ -3,6 +3,7 @@ name: Build Extension
 on:
   push:
     branches: [ main ]
+    tags: [ 'v*.*.*' ]
   pull_request:
     branches: [ main ]
   release:
@@ -11,51 +12,51 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
-    
+
     steps:
     - name: Checkout code
       uses: actions/checkout@v4
-      
+
     - name: Install dependencies
       run: |
         sudo apt-get update
         sudo apt-get install -y glib2.0-dev gettext
-        
+
     - name: Compile schemas
       run: |
         glib-compile-schemas schemas/
-        
+
     - name: Create build directory
       run: |
         mkdir -p build/draw-on-gnome@daveprowse.github.io
-        
+
     - name: Copy extension files
       run: |
         # Copy main extension files
         cp *.js build/draw-on-gnome@daveprowse.github.io/
         cp *.json build/draw-on-gnome@daveprowse.github.io/
         cp *.css build/draw-on-gnome@daveprowse.github.io/
-        
+
         # Copy directories
         cp -r ui/ build/draw-on-gnome@daveprowse.github.io/
         cp -r data/ build/draw-on-gnome@daveprowse.github.io/
         cp -r schemas/ build/draw-on-gnome@daveprowse.github.io/
         cp -r locale/ build/draw-on-gnome@daveprowse.github.io/
-        
+
         # Copy license
         cp COPYING build/draw-on-gnome@daveprowse.github.io/
-        
+
     - name: Create extension package
       run: |
         cd build
         zip -r draw-on-gnome-extension.zip draw-on-gnome@daveprowse.github.io/
-        
+
     - name: Upload build artifact
       uses: actions/upload-artifact@v4
       with:
         name: draw-on-gnome-extension
         path: build/draw-on-gnome-extension.zip
-        
+
     - name: Upload to release
       if: github.event_name == 'release'
       uses: actions/upload-release-asset@v1
