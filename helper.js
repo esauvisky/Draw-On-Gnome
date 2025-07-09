@@ -34,7 +34,7 @@ import { gettext as _ } from 'resource:///org/gnome/shell/extensions/extension.j
 
 import { CURATED_UUID as UUID } from './utils.js';
 
-import Meta from 'gi://Meta';
+import GLib from 'gi://GLib';
 
 const GS_VERSION = Config.PACKAGE_VERSION;
 const Tweener = GS_VERSION < '3.33.0' ? imports.ui.tweener : null;
@@ -88,7 +88,7 @@ export const DrawingHelper = GObject.registerClass({
         if (!this._helpKeyLabel)
             this._updateHelpKeyLabel();
 
-        return this._helpKeyLabel;
+        return GLib.markup_escape_text(this._helpKeyLabel, -1);
     }
 
     _populate() {
@@ -103,9 +103,12 @@ export const DrawingHelper = GObject.registerClass({
                 return;
 
             let hbox = new St.BoxLayout({ vertical: false });
-            let shortcut = this._extension.settings.get_strv(settingKeys)[0] || _("Not set");
+            let shortcut = this._extension.settings.get_strv(settingKeys)[0];
+            shortcut = GLib.markup_escape_text(shortcut, -1);
             hbox.add_child(new St.Label({ text: this._extension.settings.settings_schema.get_key(settingKeys).get_summary() }));
-            hbox.add_child(new St.Label({ text: shortcut, x_expand: true }));
+            let label = new St.Label({ text: "<b><i>" + shortcut + "</i></b>", x_expand: true })
+            label.get_clutter_text().set_use_markup(true);
+            hbox.add_child(label);
             this.vbox.add_child(hbox);
         });
 
@@ -120,8 +123,9 @@ export const DrawingHelper = GObject.registerClass({
         //         let [action, shortcut] = pair;
         //         let hbox = new St.BoxLayout({ vertical: false });
         //         hbox.add_child(new St.Label({ text: action }));
-        //         hbox.add_child(new St.Label({ text: shortcut, x_expand: true }));
-        //         hbox.get_children()[0].get_clutter_text().set_use_markup(true);
+        //         hbox.add_child(new St.Label({ text: shortcut, x_expand: true }).get_clutter_text().set_use_markup(true));
+
+        //         hbox.get_children()[0]);
         //         this.vbox.add_child(hbox);
         //     });
         // });
@@ -135,9 +139,12 @@ export const DrawingHelper = GObject.registerClass({
                 return;
 
             let hbox = new St.BoxLayout({ vertical: false });
-            let shortcut = this._extension.internalShortcutSettings.get_strv(settingKeys)[0] || _("Not set");
+            let shortcut = this._extension.internalShortcutSettings.get_strv(settingKeys)[0];
+            shortcut = GLib.markup_escape_text(shortcut, -1);
             hbox.add_child(new St.Label({ text: this._extension.internalShortcutSettings.settings_schema.get_key(settingKeys).get_summary() }));
-            hbox.add_child(new St.Label({ text: shortcut, x_expand: true }));
+            let label = new St.Label({ text: "<b><i>" + shortcut + "</i></b>", x_expand: true })
+            label.get_clutter_text().set_use_markup(true);
+            hbox.add_child(label);
             this.vbox.add_child(hbox);
         });
 
@@ -151,11 +158,14 @@ export const DrawingHelper = GObject.registerClass({
             if (!mediaKeysSettings.settings_schema.has_key(settingKey))
                 continue;
             let shortcut = GS_VERSION < '3.33.0' ? mediaKeysSettings.get_string(settingKey) : mediaKeysSettings.get_strv(settingKey)[0];
+            shortcut = GLib.markup_escape_text(shortcut, -1);
             if (!shortcut)
                 continue;
             let hbox = new St.BoxLayout({ vertical: false });
             hbox.add_child(new St.Label({ text: mediaKeysSettings.settings_schema.get_key(settingKey).get_summary() }));
-            hbox.add_child(new St.Label({ text: shortcut, x_expand: true }));
+            let label = new St.Label({ text: "<b><i>" + shortcut + "</i></b>", x_expand: true })
+            label.get_clutter_text().set_use_markup(true);
+            hbox.add_child(label);
             this.vbox.add_child(hbox);
         }
     }
