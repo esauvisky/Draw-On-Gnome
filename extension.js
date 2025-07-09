@@ -23,6 +23,8 @@
 
 /* eslint version: 9.16 (2024) */
 
+/// <reference types="@girs/gjs" />
+/// <reference types="@girs/gnome-shell" />
 import GObject from 'gi://GObject';
 
 import { QuickToggle, SystemIndicator, QuickSettingsMenu } from 'resource:///org/gnome/shell/ui/quickSettings.js';

@@ -23,6 +23,8 @@
 /* eslint version: 9.16 (2024) */
 /* exported Icons, Image, Images, Json, Jsons, getDateString, saveSvg */
 
+/// <reference types="@girs/gjs" />
+/// <reference types="@girs/gnome-shell" />
 
 import GdkPixbuf from 'gi://GdkPixbuf';
 import Gio from 'gi://Gio';

@@ -24,6 +24,8 @@
 /* eslint version: 9.16 (2024) */
 /* exported parseFile */
 
+/// <reference types="@girs/gjs" />
+/// <reference types="@girs/gnome-shell" />
 
 
 

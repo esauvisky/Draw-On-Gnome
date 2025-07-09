@@ -24,6 +24,8 @@
 /* eslint version: 9.16 (2024) */
 /* exported Tool, DrawingArea */
 
+/// <reference types="@girs/gjs" />
+/// <reference types="@girs/gnome-shell" />
 import Cairo from 'cairo';
 import System from 'system';
 

@@ -23,6 +23,8 @@
 /* eslint version: 9.16 (2024) */
 /* exported init */
 
+/// <reference types="@girs/gjs" />
+/// <reference types="@girs/gnome-shell" />
 import Meta from 'gi://Meta';
 import Shell from 'gi://Shell';
 import St from 'gi://St';

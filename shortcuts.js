@@ -21,6 +21,8 @@
  */
 
 /* eslint version: 9.16 (2024) */
+/// <reference types="@girs/gjs" />
+/// <reference types="@girs/gnome-shell" />
 
 // The setting keys of the "org.gnome.shell.extensions.draw-on-gnome" schema.
 

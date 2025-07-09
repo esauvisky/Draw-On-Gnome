@@ -1,0 +1,8 @@
+{
+  "type": "module",
+  "main": "extension.js",
+  "devDependencies": {
+    "@girs/gjs": "^4.0.0-beta.25",
+    "@girs/gnome-shell": "^48.0.2"
+  }
+}

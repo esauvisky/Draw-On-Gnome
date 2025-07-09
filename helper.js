@@ -24,6 +24,8 @@
 /* eslint version: 9.16 (2024) */
 /* exported DrawingHelper */
 
+/// <reference types="@girs/gjs" />
+/// <reference types="@girs/gnome-shell" />
 import Clutter from 'gi://Clutter';
 
 import St from 'gi://St';

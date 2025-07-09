@@ -23,6 +23,8 @@
 /* jslint esversion: 6 (2019) */
 /* eslint version: 9.16 (2024) */
 
+/// <reference types="@girs/gjs" />
+/// <reference types="@girs/gnome-shell" />
 import Clutter from 'gi://Clutter';
 import GLib from 'gi://GLib';
 import GObject from 'gi://GObject';
