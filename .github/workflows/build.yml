@@ -1,8 +1,8 @@
-name: Build Extension
+name: Build and Test Extension
 
 on:
   push:
-    branches: [ main ]
+    branches: [ main, develop ]
     tags: [ 'v*.*.*' ]
   pull_request:
     branches: [ main ]
@@ -10,52 +10,65 @@ on:
     types: [ published ]
 
 jobs:
-  build:
+  lint-and-check:
     runs-on: ubuntu-latest
-
     steps:
-    - name: Checkout code
-      uses: actions/checkout@v4
+    - uses: actions/checkout@v4
+
+    - name: Setup Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: '18'
+        cache: 'npm'
 
     - name: Install dependencies
+      run: npm ci
+
+    - name: Lint code
+      run: npm run lint-check
+
+    - name: Type check
+      run: npm run type-check
+
+    - name: Security audit
+      run: npm audit --audit-level moderate
+
+  build:
+    needs: lint-and-check
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v4
+
+    - name: Setup Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: '18'
+        cache: 'npm'
+
+    - name: Install system dependencies
       run: |
         sudo apt-get update
         sudo apt-get install -y glib2.0-dev gettext
 
-    - name: Compile schemas
+    - name: Install npm dependencies
+      run: npm ci
+
+    - name: Build extension
+      run: npm run build
+
+    - name: Validate package structure
       run: |
-        glib-compile-schemas schemas/
-
-    - name: Create build directory
-      run: |
-        mkdir -p build/draw-on-gnome@daveprowse.github.io
-
-    - name: Copy extension files
-      run: |
-        # Copy main extension files
-        cp *.js build/draw-on-gnome@daveprowse.github.io/
-        cp *.json build/draw-on-gnome@daveprowse.github.io/
-        cp *.css build/draw-on-gnome@daveprowse.github.io/
-
-        # Copy directories
-        cp -r ui/ build/draw-on-gnome@daveprowse.github.io/
-        cp -r data/ build/draw-on-gnome@daveprowse.github.io/
-        cp -r schemas/ build/draw-on-gnome@daveprowse.github.io/
-        cp -r locale/ build/draw-on-gnome@daveprowse.github.io/
-
-        # Copy license
-        cp COPYING build/draw-on-gnome@daveprowse.github.io/
-
-    - name: Create extension package
-      run: |
-        cd build
-        zip -r draw-on-gnome-extension.zip draw-on-gnome@daveprowse.github.io/
+        unzip -l build/draw-on-gnome@daveprowse.github.io.zip
+        test -f build/draw-on-gnome@daveprowse.github.io/extension.js
+        test -f build/draw-on-gnome@daveprowse.github.io/metadata.json
+        test -f build/draw-on-gnome@daveprowse.github.io/schemas/gschemas.compiled
 
     - name: Upload build artifact
       uses: actions/upload-artifact@v4
       with:
         name: draw-on-gnome-extension
-        path: build/draw-on-gnome-extension.zip
+        path: build/*.zip
+        retention-days: 30
 
     - name: Upload to release
       if: github.event_name == 'release'
@@ -64,6 +77,6 @@ jobs:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
         upload_url: ${{ github.event.release.upload_url }}
-        asset_path: build/draw-on-gnome-extension.zip
+        asset_path: build/draw-on-gnome@daveprowse.github.io.zip
         asset_name: draw-on-gnome-extension.zip
         asset_content_type: application/zip

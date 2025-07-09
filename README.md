@@ -74,35 +74,98 @@ Thank you to all the contributors! 😎
 
 ## Development
 
+### Prerequisites
+
+- Node.js 18+ and npm
+- GLib development tools (`glib2.0-dev` on Ubuntu/Debian)
+- TypeScript (for type checking)
+
+### Setup
+
+1. Clone the repository:
+   ```bash
+   git clone https://github.com/daveprowse/Draw-On-Gnome.git
+   cd Draw-On-Gnome
+   ```
+
+2. Install dependencies:
+   ```bash
+   npm install
+   ```
+
+3. Set up development environment:
+   ```bash
+   npm run dev-install
+   ```
+
 ### Building the Extension
 
 To build the extension for distribution:
 
 ```bash
-make build
+npm run build
 ```
 
 This will create a `build/draw-on-gnome@daveprowse.github.io.zip` file ready for installation.
 
-### Development Setup
+### Development Workflow
 
-1. Clone the repository
-2. Compile the schemas:
+1. **Start development mode:**
    ```bash
-   make dev
-   ```
-3. Create a symbolic link for development:
-   ```bash
-   ln -s $(pwd) ~/.local/share/gnome-shell/extensions/draw-on-gnome@daveprowse.github.io
+   npm run watch
    ```
 
-### Available Make Targets
+2. **Lint code:**
+   ```bash
+   npm run lint
+   ```
 
-- `make build` - Build the extension package
-- `make install` - Build and install the extension locally
-- `make uninstall` - Remove the extension
-- `make clean` - Clean build artifacts
-- `make dev` - Compile schemas for development
+3. **Type check:**
+   ```bash
+   npm run type-check
+   ```
+
+4. **Generate documentation:**
+   ```bash
+   npm run docs
+   ```
+
+### Available npm Scripts
+
+- `npm run build` - Build the extension package
+- `npm run dev` - Compile schemas for development
+- `npm run dev-install` - Set up development symlink
+- `npm run install-extension` - Build and install locally
+- `npm run watch` - Watch for changes and recompile
+- `npm run lint` - Lint and fix code
+- `npm run type-check` - Run TypeScript type checking
+- `npm run docs` - Generate JSDoc documentation
+- `npm run version-bump [major|minor|patch]` - Bump version
+- `npm run clean` - Clean build artifacts
+
+### Project Structure
+
+```
+src/
+├── extension.js          # Main extension entry point
+├── prefs.js             # Preferences dialog
+├── area.js              # Drawing area implementation
+├── areamanager.js       # Area management
+├── elements.js          # Drawing elements
+├── files.js             # File operations
+├── helper.js            # Helper utilities
+├── menu.js              # Context menu
+├── shortcuts.js         # Keyboard shortcuts
+├── utils.js             # Utility functions
+├── gimpPaletteParser.js # GIMP palette parser
+├── stylesheet.css       # Extension styles
+├── ui/                  # UI components
+│   ├── about.js
+│   ├── drawingpage.js
+│   └── preferencespage.js
+└── schemas/             # GSettings schemas
+    └── *.gschema.xml
+```
 
 ## Contributing
 
