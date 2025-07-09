@@ -15,90 +15,88 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
+ * SPDX-FileCopyrightText: 2022 zhrexl
  * SPDX-FileCopyrightText: 2024 Dave Prowse
  * SPDX-License-Identifier: GPL-3.0-or-later
- * SPDX-FileContributor: Modified by Dave Prowse 
  */
 
-/* eslint version: 9.16 (2024) */
+import Adw from "gi://Adw";
+import Gtk from "gi://Gtk";
+import GObject from "gi://GObject";
 
-import Adw from 'gi://Adw';
-import Gtk from 'gi://Gtk';
-import GObject from 'gi://GObject';
+import { gettext as _ } from "resource:///org/gnome/Shell/Extensions/js/extensions/prefs.js";
 
-import { gettext as _ } from 'resource:///org/gnome/Shell/Extensions/js/extensions/prefs.js';
-
-import { CURATED_UUID as UUID } from '../utils.js';
+import { CURATED_UUID as UUID } from "../utils.js";
 
 const MARGIN = 10;
 
 //TODO: Follow GNOME HIG for About Pages
 const AboutPage = GObject.registerClass({
-    GTypeName: `${UUID}-AboutPage`
+    GTypeName: `${UUID}-AboutPage`,
 }, class AboutPage extends Adw.PreferencesPage {
     constructor(extensionPreferences) {
         super({});
         this.set_title(_("About"));
-        this.set_name('about');
+        this.set_name("about");
         this.set_icon_name("dialog-question-symbolic");
 
-        let aboutGroup = Adw.PreferencesGroup.new();
-        let scrolledWindow = Gtk.ScrolledWindow.new();
+        const aboutGroup = Adw.PreferencesGroup.new();
+        const scrolledWindow = Gtk.ScrolledWindow.new();
 
         scrolledWindow.set_vexpand(true);
         scrolledWindow.hscrollbar_policy = Gtk.PolicyType.NEVER;
 
         aboutGroup.add(scrolledWindow);
 
-        let vbox = new Gtk.Box({ orientation: Gtk.Orientation.VERTICAL, margin_top: 3 * MARGIN, margin_bottom: 3 * MARGIN, margin_start: 3 * MARGIN, margin_end: 3 * MARGIN });
+        const vbox = new Gtk.Box({ orientation: Gtk.Orientation.VERTICAL, margin_top: 3 * MARGIN, margin_bottom: 3 * MARGIN, margin_start: 3 * MARGIN, margin_end: 3 * MARGIN });
         scrolledWindow.set_child(vbox);
 
         // Translators: you are free to translate the extension name, that is displayed in About page, or not
-        let name = "<b> " + _("Draw On Gnome") + "</b>";
+        const name = "<b> " + _("Draw On Gnome") + "</b>";
         // Translators: version number in "About" page
-        let version = _("Version %f").format(extensionPreferences.metadata.version);
+        const version = _("Version %f").format(extensionPreferences.metadata.version);
         // Translators: you are free to translate the extension description, that is displayed in About page, or not
-        let description = _("Draw on your GNOME Desktop!.\nStart by pressing 'Super+Alt+D'. Have fun! :)");
-        let link = "<span><a href=\"" + extensionPreferences.metadata.url + "\">" + extensionPreferences.metadata.url + "</a></span>";
-        let licenseName = _("GNU General Public License, version 3 or later");
-        let licenseLink = "https://www.gnu.org/licenses/gpl-3.0.html";
-        let license = "<small>" + _("This program comes with absolutely no warranty.\nSee the <a href=\"%s\">%s</a> for details.").format(licenseLink, licenseName) + "</small>";
+        const description = _("Draw on your GNOME Desktop!.\nStart by pressing 'Super+Alt+D'. Have fun! :)");
+        const link = "<span><a href=\"" + extensionPreferences.metadata.url + "\">" + extensionPreferences.metadata.url + "</a></span>";
+        const licenseName = _("GNU General Public License, version 3 or later");
+        const licenseLink = "https://www.gnu.org/licenses/gpl-3.0.html";
+        const license = "<small>" + _("This program comes with absolutely no warranty.\nSee the <a href=\"%s\">%s</a> for details.").format(licenseLink, licenseName) + "</small>";
 
-        let aboutLabel = new Gtk.Label({
-            wrap: true, justify: Gtk.Justification.CENTER, use_markup: true, label:
-                name + "\n\n" + version + "\n\n" + description + "\n\n" + link + "\n\n" + license + "\n"
+        const aboutLabel = new Gtk.Label({
+            wrap:       true, justify:    Gtk.Justification.CENTER, use_markup: true, label:
+                name + "\n\n" + version + "\n\n" + description + "\n\n" + link + "\n\n" + license + "\n",
         });
 
         vbox.append(aboutLabel);
 
-        let creditBox = new Gtk.Box({ orientation: Gtk.Orientation.HORIZONTAL, margin_top: 2 * MARGIN, margin_bottom: 2 * MARGIN, margin_start: 2 * MARGIN, margin_end: 2 * MARGIN, spacing: 5 });
-        let leftBox = new Gtk.Box({ orientation: Gtk.Orientation.VERTICAL, hexpand: true });
-        let rightBox = new Gtk.Box({ orientation: Gtk.Orientation.VERTICAL, hexpand: true });
+        const creditBox = new Gtk.Box({ orientation: Gtk.Orientation.HORIZONTAL, margin_top: 2 * MARGIN, margin_bottom: 2 * MARGIN, margin_start: 2 * MARGIN, margin_end: 2 * MARGIN, spacing: 5 });
+        const leftBox = new Gtk.Box({ orientation: Gtk.Orientation.VERTICAL, hexpand: true });
+        const rightBox = new Gtk.Box({ orientation: Gtk.Orientation.VERTICAL, hexpand: true });
         leftBox.append(new Gtk.Label({
-            wrap: true, valign: Gtk.Align.START, halign: Gtk.Align.END, justify: Gtk.Justification.RIGHT,
-            use_markup: true, label: "<small>" + _("Created by") + "</small>"
+            wrap:       true, valign:     Gtk.Align.START, halign:     Gtk.Align.END, justify:    Gtk.Justification.RIGHT,
+            use_markup: true, label:      "<small>" + _("Created by") + "</small>",
         }));
         rightBox.append(new Gtk.Label({
-            wrap: true, valign: Gtk.Align.START, halign: Gtk.Align.START, justify: Gtk.Justification.LEFT,
-            use_markup: true, label: "<small><a href=\"https://codeberg.org/abak\">Abakkk</a></small>"
+            wrap:       true, valign:     Gtk.Align.START, halign:     Gtk.Align.START, justify:    Gtk.Justification.LEFT,
+            use_markup: true, label:      "<small><a href=\"https://codeberg.org/abak\">Abakkk</a></small>",
         }));
 
         leftBox.append(new Gtk.Label({
-            wrap: true, valign: Gtk.Align.START, halign: Gtk.Align.END, justify: Gtk.Justification.RIGHT,
-            use_markup: true, label: "<small>" + _("Forked by") + "</small>"
+            wrap:       true, valign:     Gtk.Align.START, halign:     Gtk.Align.END, justify:    Gtk.Justification.RIGHT,
+            use_markup: true, label:      "<small>" + _("Forked by") + "</small>",
         }));
         rightBox.append(new Gtk.Label({
-            wrap: true, valign: Gtk.Align.START, halign: Gtk.Align.START, justify: Gtk.Justification.LEFT,
-            use_markup: true, label: "<small><a href=\"https://github.com/zhrexl\">zhrexl</a></small>"
+            wrap:       true, valign:     Gtk.Align.START, halign:     Gtk.Align.START, justify:    Gtk.Justification.LEFT,
+            use_markup: true, label:      "<small><a href=\"https://github.com/zhrexl\">zhrexl</a></small>",
         }));
 
         leftBox.append(new Gtk.Label({
-            wrap: true, valign: Gtk.Align.START, halign: Gtk.Align.END, justify: Gtk.Justification.RIGHT,
-            use_markup: true, label: "<small>" + _("Forked by") + "</small>"
+            wrap:       true, valign:     Gtk.Align.START, halign:     Gtk.Align.END, justify:    Gtk.Justification.RIGHT,
+            use_markup: true, label:      "<small>" + _("Forked by") + "</small>",
         }));
         rightBox.append(new Gtk.Label({
-            wrap: true, valign: Gtk.Align.START, halign: Gtk.Align.START, justify: Gtk.Justification.LEFT,
-            use_markup: true, label: "<small><a href=\"https://github.com/daveprowse\">daveprowse</a></small>"
+            wrap:       true, valign:     Gtk.Align.START, halign:     Gtk.Align.START, justify:    Gtk.Justification.LEFT,
+            use_markup: true, label:      "<small><a href=\"https://github.com/daveprowse\">daveprowse</a></small>",
         }));
 
         creditBox.append(leftBox);

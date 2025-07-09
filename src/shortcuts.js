@@ -16,15 +16,9 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
  * SPDX-FileCopyrightText: 2019 Abakkk
+ * SPDX-FileCopyrightText: 2024 Dave Prowse
  * SPDX-License-Identifier: GPL-3.0-or-later
- * SPDX-FileContributor: Modified by Dave Prowse
  */
-
-/* eslint version: 9.16 (2024) */
-/// <reference types="@girs/gjs" />
-/// <reference types="@girs/gnome-shell" />
-
-// The setting keys of the "org.gnome.shell.extensions.draw-on-gnome" schema.
 
 export const GLOBAL_KEYBINDINGS = [
     'toggle-drawing', 'toggle-modal', 'erase-drawings',

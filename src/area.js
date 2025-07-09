@@ -16,13 +16,9 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
  * SPDX-FileCopyrightText: 2019 Abakkk
+ * SPDX-FileCopyrightText: 2024 Dave Prowse
  * SPDX-License-Identifier: GPL-3.0-or-later
- * SPDX-FileContributor: Modified by Dave Prowse
  */
-
-/* jslint esversion: 6 (2019) */
-/* eslint version: 9.16 (2024) */
-/* exported Tool, DrawingArea */
 
 import Cairo from 'cairo';
 import System from 'system';
