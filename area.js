@@ -1091,6 +1091,26 @@ export const DrawingArea = GObject.registerClass({
         this.emit('show-osd', this._extension.FILES.ICONS.PALETTE, this.currentPalette[0], "", -1, false);
     }
 
+    cycleColors() {
+        if (!this.colors || this.colors.length === 0) return;
+        
+        let currentIndex = this.colors.findIndex(color => 
+            color.to_string() === this.currentColor.to_string());
+        
+        let nextIndex = (currentIndex + 1) % this.colors.length;
+        this.selectColor(nextIndex);
+    }
+    
+    cycleColorsReverse() {
+        if (!this.colors || this.colors.length === 0) return;
+        
+        let currentIndex = this.colors.findIndex(color => 
+            color.to_string() === this.currentColor.to_string());
+        
+        let nextIndex = (currentIndex - 1 + this.colors.length) % this.colors.length;
+        this.selectColor(nextIndex);
+    }
+
     switchDash() {
         this.dashedLine = !this.dashedLine;
         let icon = this._extension.FILES.ICONS[this.dashedLine ? 'DASHED_LINE' : 'FULL_LINE'];

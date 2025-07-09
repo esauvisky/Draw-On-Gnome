@@ -229,6 +229,8 @@ export class AreaManager {
             'toggle-square-area': this.activeArea.toggleSquareArea.bind(this.activeArea),
             'switch-color-palette': this.activeArea.switchColorPalette.bind(this.activeArea, false),
             'switch-color-palette-reverse': this.activeArea.switchColorPalette.bind(this.activeArea, true),
+            'cycle-colors': this.activeArea.cycleColors.bind(this.activeArea),
+            'cycle-colors-reverse': this.activeArea.cycleColorsReverse.bind(this.activeArea),
             'switch-font-family': this.activeArea.switchFontFamily.bind(this.activeArea, false),
             'switch-font-family-reverse': this.activeArea.switchFontFamily.bind(this.activeArea, true),
             'switch-font-weight': this.activeArea.switchFontWeight.bind(this.activeArea),
