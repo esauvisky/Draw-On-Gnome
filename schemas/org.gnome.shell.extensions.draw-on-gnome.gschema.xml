@@ -80,7 +80,7 @@
       <description>The dash offset in pixels</description>
     </key>
     <key type="s" name="grid-color">
-      <default>"Gray"</default>
+      <default>"rgb(190,190,190)"</default>
       <summary>Grid overlay color</summary>
       <description>The color of the lines</description>
     </key>
